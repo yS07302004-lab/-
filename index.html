@@ -72,13 +72,25 @@
   .note { font-size:12px; color:var(--sub); margin-top:8px; }
   .err { color:var(--warn); font-size:14px; margin-top:8px; }
   .muted { color:var(--sub); }
+  .tb-right { display:flex; gap:8px; align-items:center; }
+  .icon { border:1px solid var(--line); background:var(--card); border-radius:999px; width:34px; height:34px; font-size:16px; cursor:pointer; }
+  .tag.wait { background:transparent; border:1px dashed var(--line); color:var(--sub); }
+  .banner { margin-top:8px; font-size:13px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:6px 10px; display:flex; justify-content:space-between; gap:8px; }
+  .banner .x { border:none; background:none; color:var(--sub); font-size:16px; cursor:pointer; }
+  .urlrow { display:flex; gap:6px; margin-top:4px; } .urlrow input { margin-top:0 !important; flex:1; min-width:0; }
+  .urlrow .add { flex:0 0 auto; }
+  details { margin-top:12px; } details summary { cursor:pointer; color:var(--accent); font-size:14px; }
+  .btn:disabled { opacity:.6; }
 </style>
 </head>
 <body>
 <header id="hdr">
   <div class="titlebar">
     <h1>📚 論文アーカイブ</h1>
-    <button class="add" id="addBtn">＋ 追加</button>
+    <div class="tb-right">
+      <button class="icon" id="setBtn" aria-label="設定">⚙️</button>
+      <button class="add" id="addBtn">＋ 追加</button>
+    </div>
   </div>
   <div class="chips" id="dayChips"></div>
   <div class="filters">
@@ -86,6 +98,7 @@
     <button class="chip" id="fireOnly">🔥のみ</button>
     <button class="chip" id="mineOnly">✍️自分</button>
   </div>
+  <div id="banner"></div>
 </header>
 <main id="app"></main>
 
@@ -101,37 +114,135 @@ const DAYS = [
   { key: "日", label: "日・自由", theme: "自由" },
 ];
 const WD = ["日","月","火","水","木","金","土"];
-const state = { papers: [], day: "全て", q: "", fireOnly: false, mineOnly: false };
+const GH = { owner: "yS07302004-lab", repo: "-", branch: "claude/cloud-environment-setup-rt6af9", path: "mine.json" };
+const state = { papers: [], mine: [], day: "全て", q: "", fireOnly: false, mineOnly: false, banner: "" };
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
 };
 const isRead = (id) => store.get("read:" + id, false);
-const getMine = () => store.get("mine", []);
-const setMine = (a) => store.set("mine", a);
+const getLocal = () => store.get("mine", []);          // この端末だけに保存された（未同期の）論文
+const setLocal = (a) => store.set("mine", a);
+const token = () => store.get("ghToken", "");
 const safeUrl = (u) => /^https?:\/\//i.test(String(u || "").trim()) ? String(u).trim() : "";
 const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 const realWeekday = (date) => { const d = new Date(date + "T00:00:00"); return isNaN(d) ? "" : WD[d.getDay()]; };
+const titleOf = (p) => p.titleJa || p.titleEn || "（タイトル未入力）";
 
+/* ---------- GitHub 同期（mine.json） ---------- */
+const ghUrl = () => `https://api.github.com/repos/${GH.owner}/${encodeURIComponent(GH.repo)}/contents/${GH.path}`;
+const ghHeaders = () => ({ Authorization: `Bearer ${token()}`, Accept: "application/vnd.github+json" });
+function b64enc(s) { let bin = ""; for (const b of new TextEncoder().encode(s)) bin += String.fromCharCode(b); return btoa(bin); }
+function b64dec(s) { const bin = atob(String(s).replace(/\s/g, "")); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
+async function ghGet() {
+  const r = await fetch(`${ghUrl()}?ref=${encodeURIComponent(GH.branch)}`, { headers: ghHeaders(), cache: "no-store" });
+  if (r.status === 404) return { sha: null, papers: [] };
+  if (r.status === 401 || r.status === 403) throw new Error("合鍵が正しくないか、権限が足りません");
+  if (!r.ok) throw new Error("GitHub に接続できません（" + r.status + "）");
+  const j = await r.json();
+  return { sha: j.sha, papers: JSON.parse(b64dec(j.content)).papers || [] };
+}
+async function ghUpdate(mutate, message) {
+  for (let i = 0; i < 3; i++) {
+    const cur = await ghGet();
+    const papers = mutate(cur.papers);
+    const body = { message, branch: GH.branch, content: b64enc(JSON.stringify({ papers }, null, 2) + "\n") };
+    if (cur.sha) body.sha = cur.sha;
+    const r = await fetch(ghUrl(), { method: "PUT", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (r.ok) { state.mine = papers; return; }
+    if (r.status === 401 || r.status === 403) throw new Error("合鍵が正しくないか、権限が足りません");
+    if (r.status !== 409 && r.status !== 422) throw new Error("GitHub に保存できません（" + r.status + "）");
+  }
+  throw new Error("同時に更新されたため保存できませんでした。もう一度お試しください");
+}
+async function loadMine() {
+  if (token()) {
+    try { state.mine = (await ghGet()).papers; return; }
+    catch (e) { state.banner = "⚠️ GitHub から読み込めませんでした：" + e.message; }
+  }
+  try { const r = await fetch("mine.json?t=" + Date.now()); state.mine = r.ok ? ((await r.json()).papers || []) : []; }
+  catch { state.mine = []; }
+}
+async function migrateLocal() {
+  const local = getLocal();
+  if (!token() || !local.length) return;
+  try {
+    await ghUpdate(list => [...list.filter(x => !local.some(l => l.id === x.id)), ...local], `この端末の論文${local.length}件を同期`);
+    setLocal([]);
+    state.banner = `✅ この端末だけに保存されていた論文${local.length}件を、他の端末でも見られるようにしました。`;
+  } catch (e) { state.banner = "⚠️ この端末の論文を同期できませんでした：" + e.message; }
+}
+
+/* ---------- URL から書誌情報を自動取得 ---------- */
+const E = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/";
+const strip = (s) => String(s || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+function mapDesign(types) {
+  const t = new Set((types || []).map(x => String(x).toLowerCase()));
+  if (t.has("network meta-analysis")) return "NMA";
+  if (t.has("meta-analysis") && t.has("systematic review")) return "SR・MA";
+  if (t.has("meta-analysis")) return "MA";
+  if (t.has("systematic review")) return "SR";
+  if (t.has("randomized controlled trial")) return "RCT";
+  if (t.has("practice guideline") || t.has("guideline")) return "ガイドライン";
+  if (t.has("clinical trial") || [...t].some(x => x.startsWith("clinical trial,"))) return "臨床試験";
+  if (t.has("observational study")) return "観察研究";
+  if (t.has("case reports")) return "症例報告";
+  if (t.has("review")) return "レビュー";
+  return "";
+}
+async function getJson(u) { const r = await fetch(u); if (!r.ok) throw new Error(r.status); return r.json(); }
+async function lookup(url) {
+  let u = url; try { u = decodeURIComponent(url); } catch {}
+  let pmid = (u.match(/pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/) || u.match(/ncbi\.nlm\.nih\.gov\/pubmed\/(\d+)/) || [])[1];
+  let doi = ((u.match(/10\.\d{4,9}\/[^\s?#"<>]+/) || [])[0] || "").replace(/[.,;)\]]+$/, "");
+  if (!pmid && doi) {
+    try { pmid = (await getJson(`${E}esearch.fcgi?db=pubmed&retmode=json&term=${encodeURIComponent(doi + "[doi]")}`)).esearchresult?.idlist?.[0]; } catch {}
+  }
+  if (pmid) {
+    try {
+      const r = (await getJson(`${E}esummary.fcgi?db=pubmed&retmode=json&id=${pmid}`)).result?.[pmid];
+      if (r && r.title) return {
+        titleEn: strip(r.title).replace(/^\[(.*)\]\.?$/, "$1").replace(/\.$/, ""),
+        journal: strip(r.fulljournalname || r.source), year: String(r.pubdate || "").slice(0, 4),
+        design: mapDesign(r.pubtype), pmid,
+      };
+    } catch {}
+  }
+  if (doi) {
+    try {
+      const m = (await getJson(`https://api.crossref.org/works/${encodeURIComponent(doi)}`)).message;
+      return { titleEn: strip(m.title?.[0]), journal: strip(m["container-title"]?.[0]),
+               year: String(m.issued?.["date-parts"]?.[0]?.[0] || m.published?.["date-parts"]?.[0]?.[0] || ""), design: "" };
+    } catch {}
+  }
+  return null;
+}
+
+/* ---------- 一覧 ---------- */
 function allPapers() {
-  return [...state.papers, ...getMine()]
-    .sort((a, b) => b.date.localeCompare(a.date) || (a.mine === b.mine ? 0 : a.mine ? 1 : -1) || (a.no - b.no) || String(b.id).localeCompare(String(a.id)));
+  const local = getLocal().map(p => ({ ...p, unsynced: true }));
+  const ids = new Set();
+  return [...state.papers, ...state.mine, ...local]
+    .filter(p => p && p.id && !ids.has(p.id) && ids.add(p.id))
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)) || (!!a.mine === !!b.mine ? 0 : a.mine ? 1 : -1) || ((a.no || 0) - (b.no || 0)) || String(b.id).localeCompare(String(a.id)));
 }
 
 async function load() {
   try {
     const res = await fetch("papers.json?t=" + Date.now());
-    const data = await res.json();
-    state.papers = data.papers || [];
+    state.papers = (await res.json()).papers || [];
   } catch (e) {
     state.papers = [];
     state.loadError = true;
   }
+  await loadMine();
   state.day = store.get("day", "全て");
   renderChips();
   route();
+  if (token() && getLocal().length) { await migrateLocal(); route(); }
 }
 
 function renderChips() {
@@ -153,10 +264,16 @@ function filtered() {
     (!q || [p.titleJa, p.titleEn, p.journal, p.summary, p.clinical, p.theme, p.design, p.opposingNote].join(" ").toLowerCase().includes(q)));
 }
 
+function renderBanner() {
+  $("#banner").innerHTML = state.banner ? `<div class="banner">${esc(state.banner)} <button class="x" id="bx">×</button></div>` : "";
+  if (state.banner) $("#bx").onclick = () => { state.banner = ""; renderBanner(); };
+}
+
 function renderList() {
   $("#hdr").style.display = "";
+  renderBanner();
   const list = filtered();
-  const warn = state.loadError ? '<p class="empty">papers.json を読み込めませんでした（自分で追加した論文だけ表示しています）。</p>' : "";
+  const warn = state.loadError ? '<p class="empty">papers.json を読み込めませんでした。</p>' : "";
   if (!list.length) { $("#app").innerHTML = warn + '<p class="empty">該当する論文はまだありません。</p>'; return; }
   let html = warn, lastDate = "";
   for (const p of list) {
@@ -166,12 +283,28 @@ function renderList() {
     }
     const opp = p.opposing?.status === "あり" ? `<span class="tag fire">⚖️反対論文あり</span>` : "";
     const mine = p.mine ? `<span class="tag mine">✍️自分で追加・${esc(p.theme)}</span>` : "";
+    const wait = p.mine && p.needsFill ? `<span class="tag wait">⏳翌朝に要約</span>` : "";
+    const uns = p.unsynced ? `<span class="tag wait">📱この端末だけ</span>` : "";
     html += `<a class="card" href="#/p/${encodeURIComponent(p.id)}">
-      <div class="t">${p.challenge ? "🔥 " : ""}${esc(p.titleJa)}</div>
-      <div class="meta">${mine}${p.design ? `<span class="tag">${esc(p.design)}</span>` : ""}${opp}${isRead(p.id) ? '<span class="tag read">✓読んだ</span>' : ""}</div>
+      <div class="t">${p.challenge ? "🔥 " : ""}${esc(titleOf(p))}</div>
+      <div class="meta">${mine}${p.design ? `<span class="tag">${esc(p.design)}</span>` : ""}${opp}${wait}${uns}${isRead(p.id) ? '<span class="tag read">✓読んだ</span>' : ""}</div>
     </a>`;
   }
   $("#app").innerHTML = html;
+}
+
+/* ---------- 詳細 ---------- */
+function oppSection(p) {
+  const o = p.opposing;
+  if (p.mine && (!o || o.status === "未調査")) return "";
+  const s = o || { status: "未調査", items: [] };
+  const body = s.status === "あり"
+    ? (s.items || []).map(it => `<div class="opp-item">
+        <a href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)} ↗</a>
+        <p>${esc(it.point)}</p></div>`).join("") +
+      (s.interpretation ? `<div class="opp-item"><strong>現時点の解釈</strong><p>${esc(s.interpretation)}</p></div>` : "")
+    : `<p class="muted">${s.status === "なし" ? "反対の研究は見つからず" + (s.searched ? `（検索範囲：${esc(s.searched)}）` : "") : "未調査（アーカイブ開始前の配信分）"}</p>`;
+  return `<section class="opp"><h3>⚖️ 反対意見・異なる結果（${esc(s.status)}）</h3>${body}</section>`;
 }
 
 function renderDetail(id) {
@@ -180,36 +313,26 @@ function renderDetail(id) {
   $("#hdr").style.display = "none";
   window.scrollTo(0, 0);
   const block = (title, body, cls = "") => body ? `<section class="${cls}"><h3>${title}</h3><p>${esc(body)}</p></section>` : "";
-  let oppHtml;
-  if (p.mine) {
-    oppHtml = block("⚖️ 反対意見・異なる結果", p.opposingNote, "opp");
-  } else {
-    const o = p.opposing || { status: "未調査", items: [] };
-    const oppBody = o.status === "あり"
-      ? (o.items || []).map(it => `<div class="opp-item">
-          <a href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)} ↗</a>
-          <p>${esc(it.point)}</p></div>`).join("") +
-        (o.interpretation ? `<div class="opp-item"><strong>現時点の解釈</strong><p>${esc(o.interpretation)}</p></div>` : "")
-      : `<p class="muted">${o.status === "なし" ? "反対の研究は見つからず" + (o.searched ? `（検索範囲：${esc(o.searched)}）` : "") : "未調査（アーカイブ開始前の配信分）"}</p>`;
-    oppHtml = `<section class="opp"><h3>⚖️ 反対意見・異なる結果（${esc(o.status)}）</h3>${oppBody}</section>`;
-  }
   const url = safeUrl(p.url);
   const head = p.mine ? `${esc(p.date)}（${esc(realWeekday(p.date))}）・${esc(p.theme)}` : `${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）`;
+  const pending = p.mine && p.needsFill ? "（翌朝の定期タスクで、日本語訳・要約・反対意見が入ります）" : "";
   $("#app").innerHTML = `<div class="detail">
     <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 一覧に戻る</button>
     <div class="meta" style="margin-top:10px">
       <span>${head}</span>
       ${p.mine ? '<span class="tag mine">✍️自分で追加</span>' : ""}
+      ${p.unsynced ? '<span class="tag wait">📱この端末だけ</span>' : ""}
       ${p.design ? `<span class="tag">${esc(p.design)}</span>` : ""}${p.challenge ? '<span class="tag fire">🔥挑戦枠</span>' : ""}
     </div>
-    <h2>${esc(p.titleJa)}</h2>
-    <div class="en">${esc(p.titleEn)}${p.journal ? ` ／ ${esc(p.journal)}` : ""}${p.year ? `（${esc(p.year)}）` : ""}</div>
+    <h2>${esc(titleOf(p))}</h2>
+    <div class="en">${p.titleJa ? esc(p.titleEn) : ""}${p.journal ? `${p.titleJa && p.titleEn ? " ／ " : ""}${esc(p.journal)}` : ""}${p.year ? `（${esc(p.year)}）` : ""}</div>
     ${p.related ? `<p class="muted" style="font-size:13px">🔗 ${esc(p.related)}</p>` : ""}
-    ${block("ざっくり結論", p.summary || (p.mine ? "" : "（アーカイブ開始前の配信分のため要約なし）"))}
+    ${block("ざっくり結論", p.summary || (p.mine ? pending : "（アーカイブ開始前の配信分のため要約なし）"))}
     ${block("臨床でどう使えるか", p.clinical)}
     ${block("限界・注意点", p.limitations)}
     ${p.challenge && p.whyChallenge ? block("🔥 なぜ視点が増えるか", p.whyChallenge) : ""}
-    ${oppHtml}
+    ${oppSection(p)}
+    ${p.mine ? block("📝 自分で書いた反対意見メモ", p.opposingNote, "opp") : ""}
     ${url ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener">論文を開く ↗</a>` : ""}
     <section>
       <label class="chk"><input type="checkbox" id="readChk" ${isRead(p.id) ? "checked" : ""}> 読んだ</label>
@@ -217,42 +340,53 @@ function renderDetail(id) {
     </section>
     ${p.mine ? `<div class="row2">
       <a class="btn ghost" href="#/edit/${encodeURIComponent(p.id)}">✏️ 編集</a>
-      <button class="btn danger" id="delBtn">🗑 削除</button></div>` : ""}
+      <button class="btn danger" id="delBtn">🗑 削除</button></div><div id="err" class="err"></div>` : ""}
   </div>`;
   $("#readChk").onchange = (e) => store.set("read:" + p.id, e.target.checked);
   $("#memo").oninput = (e) => store.set("memo:" + p.id, e.target.value);
-  if (p.mine) $("#delBtn").onclick = () => {
-    if (!confirm("この論文を削除しますか？（元に戻せません）")) return;
-    setMine(getMine().filter(x => x.id !== p.id));
-    try { localStorage.removeItem("read:" + p.id); localStorage.removeItem("memo:" + p.id); } catch {}
-    location.hash = "";
+  if (p.mine) $("#delBtn").onclick = async () => {
+    if (!confirm("この論文を削除しますか？（他の端末からも消えます。元に戻せません）")) return;
+    const btn = $("#delBtn"); btn.disabled = true; btn.textContent = "削除中…";
+    try {
+      if (p.unsynced) setLocal(getLocal().filter(x => x.id !== p.id));
+      else {
+        if (!token()) throw new Error("他の端末と共有している論文の削除には、⚙️設定で GitHub の合鍵が必要です");
+        await ghUpdate(list => list.filter(x => x.id !== p.id), `論文を削除: ${titleOf(p)}`);
+      }
+      store.del("read:" + p.id); store.del("memo:" + p.id);
+      location.hash = "";
+    } catch (e) { $("#err").textContent = e.message; btn.disabled = false; btn.textContent = "🗑 削除"; }
   };
 }
 
+/* ---------- 追加・編集フォーム ---------- */
 function renderForm(editId) {
-  const p = editId ? getMine().find(x => x.id === editId) : null;
+  const p = editId ? allPapers().find(x => x.id === editId && x.mine) : null;
   if (editId && !p) { location.hash = ""; return; }
   $("#hdr").style.display = "none";
   window.scrollTo(0, 0);
-  const v = p || { date: today(), weekday: realWeekday(today()) };
+  const v = p || { date: today(), weekday: realWeekday(today()), needsFill: true };
   const field = (name, label, opts = {}) => {
-    const req = opts.required ? " <b>必須</b>" : "";
     const ph = opts.ph ? ` placeholder="${esc(opts.ph)}"` : "";
     const input = opts.area
       ? `<textarea name="${name}"${ph}>${esc(v[name])}</textarea>`
       : `<input name="${name}" type="${opts.type || "text"}" value="${esc(v[name])}"${ph}${opts.list ? ` list="${opts.list}"` : ""}${opts.mode ? ` inputmode="${opts.mode}"` : ""}>`;
-    return `<label class="f">${label}${req}${input}</label>`;
+    return `<label class="f">${label}${input}</label>`;
   };
   $("#app").innerHTML = `<div class="detail form">
     <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 戻る</button>
     <h2>${p ? "論文を編集" : "論文を追加"}</h2>
     <form id="f" autocomplete="off">
-      ${field("titleJa", "研究名（日本語）", { required: true, ph: "例：慢性腰痛に対する鍼治療のRCT" })}
-      ${field("url", "論文のURL（PubMed・DOIなど）", { type: "url", ph: "https://pubmed.ncbi.nlm.nih.gov/…", mode: "url" })}
-      ${field("titleEn", "原題", { ph: "英語のタイトル" })}
+      <label class="f">論文のURL（PubMed・DOI）
+        <div class="urlrow"><input name="url" type="url" inputmode="url" value="${esc(v.url)}" placeholder="https://pubmed.ncbi.nlm.nih.gov/…">
+        <button type="button" class="add" id="lookBtn">🔍 自動入力</button></div>
+      </label>
+      <div id="lookMsg" class="note"></div>
+      ${field("titleJa", "研究名（日本語）", { ph: "空欄なら翌朝 Claude が訳します" })}
+      ${field("titleEn", "原題")}
       <div class="row2">
         ${field("journal", "雑誌名")}
-        ${field("year", "発表年", { mode: "numeric", ph: "2026" })}
+        ${field("year", "発表年", { mode: "numeric" })}
       </div>
       <div class="row2">
         <label class="f">分野
@@ -260,36 +394,114 @@ function renderForm(editId) {
         </label>
         ${field("design", "研究デザイン", { list: "designs", ph: "RCT、SR・MA など" })}
       </div>
-      <datalist id="designs">${["SR・MA","RCT","シャム対照RCT","ネットワークメタ分析","コホート研究","症例対照研究","横断研究","ガイドライン","ナラティブレビュー","症例報告"].map(x => `<option value="${x}">`).join("")}</datalist>
+      <datalist id="designs">${["SR・MA","SR","NMA","RCT","シャム対照RCT","臨床試験","コホート研究","症例対照研究","横断研究","観察研究","ガイドライン","レビュー","症例報告"].map(x => `<option value="${x}">`).join("")}</datalist>
       ${field("date", "追加日", { type: "date" })}
-      ${field("summary", "ざっくり結論", { area: true })}
-      ${field("clinical", "臨床でどう使えるか", { area: true })}
-      ${field("limitations", "限界・注意点", { area: true })}
-      ${field("opposingNote", "反対意見・異なる結果", { area: true, ph: "反対の研究や批判があればURLと要点" })}
+      <label class="chk" style="margin-top:14px"><input type="checkbox" name="needsFill" ${v.needsFill ? "checked" : ""}> 🤖 空欄（日本語訳・要約・臨床・限界・反対意見）を翌朝 Claude に埋めてもらう</label>
+      <details ${v.summary || v.clinical || v.limitations || v.opposingNote ? "open" : ""}>
+        <summary>自分で書く（任意）</summary>
+        ${field("summary", "ざっくり結論", { area: true })}
+        ${field("clinical", "臨床でどう使えるか", { area: true })}
+        ${field("limitations", "限界・注意点", { area: true })}
+        ${field("opposingNote", "反対意見メモ", { area: true, ph: "反対の研究や批判があればURLと要点" })}
+      </details>
       <label class="chk" style="margin-top:12px"><input type="checkbox" name="challenge" ${v.challenge ? "checked" : ""}> 🔥 挑戦枠（考え方を揺さぶる論文）</label>
       <div id="err" class="err"></div>
-      <button class="btn" type="submit">${p ? "保存する" : "追加する"}</button>
-      <p class="note">自分で追加した論文は、この端末のこのアプリの中だけに保存されます（ネットには公開されません）。Safari のサイトデータを消すと一緒に消えます。</p>
+      <button class="btn" type="submit" id="saveBtn">${p ? "保存する" : "追加する"}</button>
+      <p class="note">${token()
+        ? "GitHub に保存され、他の端末からも見られます（ページは公開なので、他の人も見られる状態です）。"
+        : "⚠️ まだ GitHub の合鍵が設定されていないため、この端末だけに保存されます。右上の⚙️から設定すると他の端末でも見られます。"}</p>
     </form>
   </div>`;
-  $("#f").onsubmit = (e) => {
+  const f = $("#f");
+  const doLookup = async () => {
+    const url = f.url.value.trim();
+    if (!safeUrl(url)) { $("#lookMsg").textContent = "https:// から始まる URL を入れてください。"; return; }
+    $("#lookMsg").textContent = "🔍 PubMed などで調べています…";
+    const info = await lookup(url).catch(() => null);
+    if (!info) { $("#lookMsg").textContent = "自動では見つかりませんでした。PubMed か DOI の URL だと見つかりやすいです。"; return; }
+    const filled = [];
+    for (const k of ["titleEn", "journal", "year", "design"]) if (info[k] && !f[k].value.trim()) { f[k].value = info[k]; filled.push(k); }
+    $("#lookMsg").textContent = filled.length ? "✅ 原題・雑誌名・発表年・デザインを入れました（日本語訳と要約は翌朝 Claude が埋めます）。" : "✅ 見つかりました（入力済みの欄はそのままにしています）。";
+  };
+  $("#lookBtn").onclick = doLookup;
+  f.url.addEventListener("paste", () => setTimeout(doLookup, 50));
+  f.onsubmit = async (e) => {
     e.preventDefault();
-    const fd = new FormData(e.target);
+    const fd = new FormData(f);
     const g = (k) => String(fd.get(k) || "").trim();
-    if (!g("titleJa")) { $("#err").textContent = "研究名（日本語）を入れてください。"; return; }
+    if (!g("titleJa") && !g("titleEn") && !g("url")) { $("#err").textContent = "URL か研究名を入れてください。"; return; }
     if (g("url") && !safeUrl(g("url"))) { $("#err").textContent = "URLは https:// から始まる形で入れてください。"; return; }
     const wd = g("weekday") || "日";
     const item = {
+      ...(p ? Object.fromEntries(Object.entries(p).filter(([k]) => k !== "unsynced")) : {}),
       id: p ? p.id : "mine-" + Date.now(), mine: true, no: 0,
       date: /^\d{4}-\d{2}-\d{2}$/.test(g("date")) ? g("date") : today(),
       weekday: wd, theme: (DAYS.find(d => d.key === wd) || {}).theme || "自由",
       titleJa: g("titleJa"), titleEn: g("titleEn"), journal: g("journal"), year: g("year"),
       design: g("design"), url: g("url"), summary: g("summary"), clinical: g("clinical"),
-      limitations: g("limitations"), opposingNote: g("opposingNote"), challenge: fd.get("challenge") === "on",
+      limitations: g("limitations"), opposingNote: g("opposingNote"),
+      challenge: fd.get("challenge") === "on", needsFill: fd.get("needsFill") === "on",
     };
-    const list = getMine().filter(x => x.id !== item.id);
-    if (!setMine([...list, item])) { $("#err").textContent = "保存できませんでした（プライベートブラウズ中だと保存できません）。"; return; }
-    location.replace("#/p/" + encodeURIComponent(item.id));
+    const btn = $("#saveBtn"); btn.disabled = true; btn.textContent = "保存中…";
+    try {
+      if (token()) {
+        await ghUpdate(list => [...list.filter(x => x.id !== item.id), item], `${p ? "論文を編集" : "論文を追加"}: ${titleOf(item)}`);
+        setLocal(getLocal().filter(x => x.id !== item.id));
+      } else if (!setLocal([...getLocal().filter(x => x.id !== item.id), item])) {
+        throw new Error("保存できませんでした（プライベートブラウズ中だと保存できません）");
+      }
+      location.replace("#/p/" + encodeURIComponent(item.id));
+    } catch (err) {
+      $("#err").textContent = "⚠️ " + err.message;
+      btn.disabled = false; btn.textContent = p ? "保存する" : "追加する";
+    }
+  };
+}
+
+/* ---------- 設定（GitHub の合鍵） ---------- */
+function renderSettings() {
+  $("#hdr").style.display = "none";
+  window.scrollTo(0, 0);
+  const has = !!token();
+  $("#app").innerHTML = `<div class="detail form">
+    <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 戻る</button>
+    <h2>⚙️ 他の端末と共有する設定</h2>
+    <p class="note" style="font-size:14px">自分で追加した論文を他の端末でも見られるようにするには、端末ごとに一度だけ「GitHub の合鍵（トークン）」を入れます。</p>
+    <section><h3>状態</h3><p>${has ? "✅ 設定済み（この端末で追加した論文は GitHub に保存されます）" : "未設定（この端末だけに保存されます）"}</p></section>
+    <section><h3>合鍵の作り方（最初の1回だけ）</h3><p>1. GitHub にログインして、右上のアイコン → Settings → 一番下の Developer settings
+2. Personal access tokens → Fine-grained tokens → Generate new token
+3. Token name：論文アーカイブ／Expiration：好きな期限（最長1年）
+4. Repository access：Only select repositories → このリポジトリ（-）だけを選ぶ
+5. Permissions → Repository permissions → Contents を「Read and write」
+6. Generate token を押して、出てきた文字列（github_pat_…）をコピー
+※ 同じ合鍵を他の端末にも貼れば使えます。合鍵は人に見せないでください。</p></section>
+    <form id="sf">
+      <label class="f">合鍵（github_pat_…）<input name="tok" type="password" autocomplete="off" placeholder="${has ? "設定済み（変更する場合のみ入力）" : "ここに貼り付け"}"></label>
+      <div id="err" class="err"></div>
+      <button class="btn" type="submit" id="tokBtn">保存して確認</button>
+      ${has ? '<button class="btn danger" type="button" id="rmBtn">この端末から合鍵を消す</button>' : ""}
+    </form>
+  </div>`;
+  $("#sf").onsubmit = async (e) => {
+    e.preventDefault();
+    const t = e.target.tok.value.trim();
+    if (!t) { $("#err").textContent = "合鍵を貼り付けてください。"; return; }
+    const prev = token(); store.set("ghToken", t);
+    const btn = $("#tokBtn"); btn.disabled = true; btn.textContent = "確認中…";
+    try {
+      state.mine = (await ghGet()).papers;
+      state.banner = "✅ GitHub とつながりました。";
+      await migrateLocal();
+      location.hash = "";
+    } catch (err) {
+      if (prev) store.set("ghToken", prev); else store.del("ghToken");
+      $("#err").textContent = "⚠️ " + err.message;
+      btn.disabled = false; btn.textContent = "保存して確認";
+    }
+  };
+  if (has) $("#rmBtn").onclick = () => {
+    if (!confirm("この端末から合鍵を消しますか？（GitHub に保存済みの論文は消えません）")) return;
+    store.del("ghToken"); state.banner = "合鍵を消しました。"; location.hash = "";
   };
 }
 
@@ -297,6 +509,7 @@ function route() {
   const h = location.hash;
   let m;
   if (h === "#/add") renderForm(null);
+  else if (h === "#/settings") renderSettings();
   else if ((m = h.match(/^#\/edit\/(.+)$/))) renderForm(decodeURIComponent(m[1]));
   else if ((m = h.match(/^#\/p\/(.+)$/))) renderDetail(decodeURIComponent(m[1]));
   else renderList();
@@ -306,6 +519,7 @@ $("#q").oninput = (e) => { state.q = e.target.value; renderList(); };
 $("#fireOnly").onclick = () => { state.fireOnly = !state.fireOnly; renderChips(); renderList(); };
 $("#mineOnly").onclick = () => { state.mineOnly = !state.mineOnly; renderChips(); renderList(); };
 $("#addBtn").onclick = () => { location.hash = "#/add"; };
+$("#setBtn").onclick = () => { location.hash = "#/settings"; };
 window.addEventListener("hashchange", route);
 load();
 </script>
