@@ -6,15 +6,17 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="論文アーカイブ">
 <meta name="robots" content="noindex, nofollow">
-<title>毎朝の論文アーカイブ</title>
+<title>論文アーカイブ</title>
 <style>
   :root {
     --bg: #f7f6f3; --card: #fff; --text: #1f1f1f; --sub: #6b6b6b; --line: #e6e4df;
     --accent: #2f6f5e; --accent-soft: #e5f1ec; --warn: #b4552d; --warn-soft: #f9ece7;
+    --mine: #3d5a99; --mine-soft: #e7ecf7;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#161616; --card:#212121; --text:#ececec; --sub:#a0a0a0; --line:#333;
-            --accent:#6fc2a8; --accent-soft:#1f3a32; --warn:#e8916a; --warn-soft:#3a261d; }
+            --accent:#6fc2a8; --accent-soft:#1f3a32; --warn:#e8916a; --warn-soft:#3a261d;
+            --mine:#9db4ea; --mine-soft:#232c42; }
   }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--text);
@@ -22,14 +24,17 @@
          line-height:1.6; padding-bottom: env(safe-area-inset-bottom); }
   header { position:sticky; top:0; z-index:10; background:var(--bg); padding:14px 16px 8px;
            border-bottom:1px solid var(--line); }
-  h1 { font-size:18px; margin:0 0 10px; }
+  .titlebar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 0 10px; }
+  h1 { font-size:18px; margin:0; }
+  .add { border:none; background:var(--accent); color:#fff; border-radius:999px; padding:6px 14px;
+         font-size:14px; font-weight:600; cursor:pointer; }
   .chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
   .chips::-webkit-scrollbar { display:none; }
   .chip { flex:0 0 auto; border:1px solid var(--line); background:var(--card); color:var(--text);
           border-radius:999px; padding:6px 12px; font-size:14px; cursor:pointer; }
   .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
   .filters { display:flex; gap:8px; margin-top:6px; }
-  .filters input[type=search] { flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--line);
+  .filters input[type=search] { flex:1; min-width:0; padding:8px 10px; border-radius:10px; border:1px solid var(--line);
                                 background:var(--card); color:var(--text); font-size:15px; }
   main { padding:12px 16px 40px; max-width:720px; margin:0 auto; }
   .day { font-size:13px; color:var(--sub); margin:18px 0 6px; }
@@ -39,6 +44,7 @@
   .meta { font-size:12px; color:var(--sub); margin-top:4px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .tag { font-size:11px; padding:1px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent); }
   .tag.fire { background:var(--warn-soft); color:var(--warn); }
+  .tag.mine { background:var(--mine-soft); color:var(--mine); }
   .tag.read { background:transparent; border:1px solid var(--line); color:var(--sub); }
   .empty { color:var(--sub); text-align:center; margin-top:40px; }
   .back { background:none; border:none; color:var(--accent); font-size:15px; padding:0; cursor:pointer; }
@@ -50,21 +56,35 @@
   section p { margin:0; white-space:pre-wrap; }
   .opp-item { border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
   .opp-item a { color:var(--warn); font-weight:600; }
-  .btn { display:block; text-align:center; background:var(--accent); color:#fff; text-decoration:none;
-         padding:12px; border-radius:12px; font-weight:600; margin-top:14px; }
+  .btn { display:block; width:100%; text-align:center; background:var(--accent); color:#fff; text-decoration:none; border:none;
+         padding:12px; border-radius:12px; font-weight:600; font-size:15px; margin-top:14px; cursor:pointer; font-family:inherit; }
+  .btn.ghost { background:transparent; color:var(--accent); border:1px solid var(--line); }
+  .btn.danger { background:transparent; color:var(--warn); border:1px solid var(--line); }
+  .row2 { display:flex; gap:8px; } .row2 > * { flex:1; }
   label.chk { display:flex; gap:8px; align-items:center; font-size:15px; }
   textarea { width:100%; min-height:90px; margin-top:8px; padding:8px; border-radius:10px; border:1px solid var(--line);
-             background:var(--bg); color:var(--text); font-size:15px; font-family:inherit; }
+             background:var(--bg); color:var(--text); font-size:16px; font-family:inherit; }
+  .form label.f { display:block; font-size:13px; color:var(--sub); margin-top:12px; }
+  .form label.f b { color:var(--warn); font-weight:600; }
+  .form input:not([type=checkbox]), .form select { width:100%; margin-top:4px; padding:9px 10px; border-radius:10px;
+             border:1px solid var(--line); background:var(--bg); color:var(--text); font-size:16px; font-family:inherit; }
+  .form textarea { min-height:70px; margin-top:4px; }
+  .note { font-size:12px; color:var(--sub); margin-top:8px; }
+  .err { color:var(--warn); font-size:14px; margin-top:8px; }
   .muted { color:var(--sub); }
 </style>
 </head>
 <body>
 <header id="hdr">
-  <h1>📚 毎朝の論文アーカイブ</h1>
+  <div class="titlebar">
+    <h1>📚 論文アーカイブ</h1>
+    <button class="add" id="addBtn">＋ 追加</button>
+  </div>
   <div class="chips" id="dayChips"></div>
   <div class="filters">
-    <input type="search" id="q" placeholder="キーワードで絞り込み（例：腰痛、鍼）">
+    <input type="search" id="q" placeholder="キーワード検索">
     <button class="chip" id="fireOnly">🔥のみ</button>
+    <button class="chip" id="mineOnly">✍️自分</button>
   </div>
 </header>
 <main id="app"></main>
@@ -72,31 +92,42 @@
 <script>
 const DAYS = [
   { key: "全て", label: "全て" },
-  { key: "月", label: "月・鍼灸" },
-  { key: "火", label: "火・徒手/マッサージ" },
-  { key: "水", label: "水・柔整領域" },
-  { key: "木", label: "木・成長期/野球" },
-  { key: "金", label: "金・疼痛科学" },
-  { key: "土", label: "土・トレーニング" },
-  { key: "日", label: "日・自由" },
+  { key: "月", label: "月・鍼灸", theme: "鍼灸" },
+  { key: "火", label: "火・徒手/マッサージ", theme: "徒手療法・マッサージ" },
+  { key: "水", label: "水・柔整領域", theme: "柔整領域" },
+  { key: "木", label: "木・成長期/野球", theme: "成長期・野球" },
+  { key: "金", label: "金・疼痛科学", theme: "疼痛科学" },
+  { key: "土", label: "土・トレーニング", theme: "トレーニング・運動生理" },
+  { key: "日", label: "日・自由", theme: "自由" },
 ];
-const state = { papers: [], day: "全て", q: "", fireOnly: false };
+const WD = ["日","月","火","水","木","金","土"];
+const state = { papers: [], day: "全て", q: "", fireOnly: false, mineOnly: false };
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
 };
 const isRead = (id) => store.get("read:" + id, false);
+const getMine = () => store.get("mine", []);
+const setMine = (a) => store.set("mine", a);
+const safeUrl = (u) => /^https?:\/\//i.test(String(u || "").trim()) ? String(u).trim() : "";
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const realWeekday = (date) => { const d = new Date(date + "T00:00:00"); return isNaN(d) ? "" : WD[d.getDay()]; };
+
+function allPapers() {
+  return [...state.papers, ...getMine()]
+    .sort((a, b) => b.date.localeCompare(a.date) || (a.mine === b.mine ? 0 : a.mine ? 1 : -1) || (a.no - b.no) || String(b.id).localeCompare(String(a.id)));
+}
 
 async function load() {
   try {
     const res = await fetch("papers.json?t=" + Date.now());
     const data = await res.json();
-    state.papers = (data.papers || []).sort((a, b) => b.date.localeCompare(a.date) || a.no - b.no);
+    state.papers = data.papers || [];
   } catch (e) {
-    $("#app").innerHTML = '<p class="empty">papers.json を読み込めませんでした。</p>';
-    return;
+    state.papers = [];
+    state.loadError = true;
   }
   state.day = store.get("day", "全て");
   renderChips();
@@ -110,76 +141,171 @@ function renderChips() {
     state.day = b.dataset.day; store.set("day", state.day); renderChips(); renderList();
   });
   $("#fireOnly").classList.toggle("on", state.fireOnly);
+  $("#mineOnly").classList.toggle("on", state.mineOnly);
 }
 
 function filtered() {
   const q = state.q.trim().toLowerCase();
-  return state.papers.filter(p =>
+  return allPapers().filter(p =>
     (state.day === "全て" || p.weekday === state.day) &&
     (!state.fireOnly || p.challenge) &&
-    (!q || [p.titleJa, p.titleEn, p.summary, p.clinical, p.theme, p.design].join(" ").toLowerCase().includes(q)));
+    (!state.mineOnly || p.mine) &&
+    (!q || [p.titleJa, p.titleEn, p.journal, p.summary, p.clinical, p.theme, p.design, p.opposingNote].join(" ").toLowerCase().includes(q)));
 }
 
 function renderList() {
   $("#hdr").style.display = "";
   const list = filtered();
-  if (!list.length) { $("#app").innerHTML = '<p class="empty">該当する論文はまだありません。</p>'; return; }
-  let html = "", lastDate = "";
+  const warn = state.loadError ? '<p class="empty">papers.json を読み込めませんでした（自分で追加した論文だけ表示しています）。</p>' : "";
+  if (!list.length) { $("#app").innerHTML = warn + '<p class="empty">該当する論文はまだありません。</p>'; return; }
+  let html = warn, lastDate = "";
   for (const p of list) {
-    if (p.date !== lastDate) { html += `<div class="day">${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）</div>`; lastDate = p.date; }
+    if (p.date !== lastDate) {
+      const head = p.mine ? `${esc(p.date)}（${esc(realWeekday(p.date))}）` : `${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）`;
+      html += `<div class="day">${head}</div>`; lastDate = p.date;
+    }
     const opp = p.opposing?.status === "あり" ? `<span class="tag fire">⚖️反対論文あり</span>` : "";
+    const mine = p.mine ? `<span class="tag mine">✍️自分で追加・${esc(p.theme)}</span>` : "";
     html += `<a class="card" href="#/p/${encodeURIComponent(p.id)}">
       <div class="t">${p.challenge ? "🔥 " : ""}${esc(p.titleJa)}</div>
-      <div class="meta"><span class="tag">${esc(p.design)}</span>${opp}${isRead(p.id) ? '<span class="tag read">✓読んだ</span>' : ""}</div>
+      <div class="meta">${mine}${p.design ? `<span class="tag">${esc(p.design)}</span>` : ""}${opp}${isRead(p.id) ? '<span class="tag read">✓読んだ</span>' : ""}</div>
     </a>`;
   }
   $("#app").innerHTML = html;
 }
 
 function renderDetail(id) {
-  const p = state.papers.find(x => x.id === id);
+  const p = allPapers().find(x => x.id === id);
   if (!p) { location.hash = ""; return; }
   $("#hdr").style.display = "none";
   window.scrollTo(0, 0);
-  const o = p.opposing || { status: "未調査", items: [] };
-  const oppBody = o.status === "あり"
-    ? (o.items || []).map(it => `<div class="opp-item">
-        <a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)} ↗</a>
-        <p>${esc(it.point)}</p></div>`).join("") +
-      (o.interpretation ? `<div class="opp-item"><strong>現時点の解釈</strong><p>${esc(o.interpretation)}</p></div>` : "")
-    : `<p class="muted">${o.status === "なし" ? "反対の研究は見つからず" + (o.searched ? `（検索範囲：${esc(o.searched)}）` : "") : "未調査（アーカイブ開始前の配信分）"}</p>`;
-  const block = (title, body) => body ? `<section><h3>${title}</h3><p>${esc(body)}</p></section>` : "";
+  const block = (title, body, cls = "") => body ? `<section class="${cls}"><h3>${title}</h3><p>${esc(body)}</p></section>` : "";
+  let oppHtml;
+  if (p.mine) {
+    oppHtml = block("⚖️ 反対意見・異なる結果", p.opposingNote, "opp");
+  } else {
+    const o = p.opposing || { status: "未調査", items: [] };
+    const oppBody = o.status === "あり"
+      ? (o.items || []).map(it => `<div class="opp-item">
+          <a href="${esc(safeUrl(it.url))}" target="_blank" rel="noopener">${esc(it.title)} ↗</a>
+          <p>${esc(it.point)}</p></div>`).join("") +
+        (o.interpretation ? `<div class="opp-item"><strong>現時点の解釈</strong><p>${esc(o.interpretation)}</p></div>` : "")
+      : `<p class="muted">${o.status === "なし" ? "反対の研究は見つからず" + (o.searched ? `（検索範囲：${esc(o.searched)}）` : "") : "未調査（アーカイブ開始前の配信分）"}</p>`;
+    oppHtml = `<section class="opp"><h3>⚖️ 反対意見・異なる結果（${esc(o.status)}）</h3>${oppBody}</section>`;
+  }
+  const url = safeUrl(p.url);
+  const head = p.mine ? `${esc(p.date)}（${esc(realWeekday(p.date))}）・${esc(p.theme)}` : `${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）`;
   $("#app").innerHTML = `<div class="detail">
     <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 一覧に戻る</button>
     <div class="meta" style="margin-top:10px">
-      <span>${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）</span>
-      <span class="tag">${esc(p.design)}</span>${p.challenge ? '<span class="tag fire">🔥挑戦枠</span>' : ""}
+      <span>${head}</span>
+      ${p.mine ? '<span class="tag mine">✍️自分で追加</span>' : ""}
+      ${p.design ? `<span class="tag">${esc(p.design)}</span>` : ""}${p.challenge ? '<span class="tag fire">🔥挑戦枠</span>' : ""}
     </div>
     <h2>${esc(p.titleJa)}</h2>
     <div class="en">${esc(p.titleEn)}${p.journal ? ` ／ ${esc(p.journal)}` : ""}${p.year ? `（${esc(p.year)}）` : ""}</div>
     ${p.related ? `<p class="muted" style="font-size:13px">🔗 ${esc(p.related)}</p>` : ""}
-    ${block("ざっくり結論", p.summary || "（アーカイブ開始前の配信分のため要約なし）")}
+    ${block("ざっくり結論", p.summary || (p.mine ? "" : "（アーカイブ開始前の配信分のため要約なし）"))}
     ${block("臨床でどう使えるか", p.clinical)}
     ${block("限界・注意点", p.limitations)}
     ${p.challenge && p.whyChallenge ? block("🔥 なぜ視点が増えるか", p.whyChallenge) : ""}
-    <section class="opp"><h3>⚖️ 反対意見・異なる結果（${esc(o.status)}）</h3>${oppBody}</section>
-    <a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">論文を開く ↗</a>
+    ${oppHtml}
+    ${url ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener">論文を開く ↗</a>` : ""}
     <section>
       <label class="chk"><input type="checkbox" id="readChk" ${isRead(p.id) ? "checked" : ""}> 読んだ</label>
       <textarea id="memo" placeholder="メモ（この端末に保存されます）">${esc(store.get("memo:" + p.id, ""))}</textarea>
     </section>
+    ${p.mine ? `<div class="row2">
+      <a class="btn ghost" href="#/edit/${encodeURIComponent(p.id)}">✏️ 編集</a>
+      <button class="btn danger" id="delBtn">🗑 削除</button></div>` : ""}
   </div>`;
   $("#readChk").onchange = (e) => store.set("read:" + p.id, e.target.checked);
   $("#memo").oninput = (e) => store.set("memo:" + p.id, e.target.value);
+  if (p.mine) $("#delBtn").onclick = () => {
+    if (!confirm("この論文を削除しますか？（元に戻せません）")) return;
+    setMine(getMine().filter(x => x.id !== p.id));
+    try { localStorage.removeItem("read:" + p.id); localStorage.removeItem("memo:" + p.id); } catch {}
+    location.hash = "";
+  };
+}
+
+function renderForm(editId) {
+  const p = editId ? getMine().find(x => x.id === editId) : null;
+  if (editId && !p) { location.hash = ""; return; }
+  $("#hdr").style.display = "none";
+  window.scrollTo(0, 0);
+  const v = p || { date: today(), weekday: realWeekday(today()) };
+  const field = (name, label, opts = {}) => {
+    const req = opts.required ? " <b>必須</b>" : "";
+    const ph = opts.ph ? ` placeholder="${esc(opts.ph)}"` : "";
+    const input = opts.area
+      ? `<textarea name="${name}"${ph}>${esc(v[name])}</textarea>`
+      : `<input name="${name}" type="${opts.type || "text"}" value="${esc(v[name])}"${ph}${opts.list ? ` list="${opts.list}"` : ""}${opts.mode ? ` inputmode="${opts.mode}"` : ""}>`;
+    return `<label class="f">${label}${req}${input}</label>`;
+  };
+  $("#app").innerHTML = `<div class="detail form">
+    <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 戻る</button>
+    <h2>${p ? "論文を編集" : "論文を追加"}</h2>
+    <form id="f" autocomplete="off">
+      ${field("titleJa", "研究名（日本語）", { required: true, ph: "例：慢性腰痛に対する鍼治療のRCT" })}
+      ${field("url", "論文のURL（PubMed・DOIなど）", { type: "url", ph: "https://pubmed.ncbi.nlm.nih.gov/…", mode: "url" })}
+      ${field("titleEn", "原題", { ph: "英語のタイトル" })}
+      <div class="row2">
+        ${field("journal", "雑誌名")}
+        ${field("year", "発表年", { mode: "numeric", ph: "2026" })}
+      </div>
+      <div class="row2">
+        <label class="f">分野
+          <select name="weekday">${DAYS.slice(1).map(d => `<option value="${d.key}" ${v.weekday === d.key ? "selected" : ""}>${esc(d.theme)}</option>`).join("")}</select>
+        </label>
+        ${field("design", "研究デザイン", { list: "designs", ph: "RCT、SR・MA など" })}
+      </div>
+      <datalist id="designs">${["SR・MA","RCT","シャム対照RCT","ネットワークメタ分析","コホート研究","症例対照研究","横断研究","ガイドライン","ナラティブレビュー","症例報告"].map(x => `<option value="${x}">`).join("")}</datalist>
+      ${field("date", "追加日", { type: "date" })}
+      ${field("summary", "ざっくり結論", { area: true })}
+      ${field("clinical", "臨床でどう使えるか", { area: true })}
+      ${field("limitations", "限界・注意点", { area: true })}
+      ${field("opposingNote", "反対意見・異なる結果", { area: true, ph: "反対の研究や批判があればURLと要点" })}
+      <label class="chk" style="margin-top:12px"><input type="checkbox" name="challenge" ${v.challenge ? "checked" : ""}> 🔥 挑戦枠（考え方を揺さぶる論文）</label>
+      <div id="err" class="err"></div>
+      <button class="btn" type="submit">${p ? "保存する" : "追加する"}</button>
+      <p class="note">自分で追加した論文は、この端末のこのアプリの中だけに保存されます（ネットには公開されません）。Safari のサイトデータを消すと一緒に消えます。</p>
+    </form>
+  </div>`;
+  $("#f").onsubmit = (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const g = (k) => String(fd.get(k) || "").trim();
+    if (!g("titleJa")) { $("#err").textContent = "研究名（日本語）を入れてください。"; return; }
+    if (g("url") && !safeUrl(g("url"))) { $("#err").textContent = "URLは https:// から始まる形で入れてください。"; return; }
+    const wd = g("weekday") || "日";
+    const item = {
+      id: p ? p.id : "mine-" + Date.now(), mine: true, no: 0,
+      date: /^\d{4}-\d{2}-\d{2}$/.test(g("date")) ? g("date") : today(),
+      weekday: wd, theme: (DAYS.find(d => d.key === wd) || {}).theme || "自由",
+      titleJa: g("titleJa"), titleEn: g("titleEn"), journal: g("journal"), year: g("year"),
+      design: g("design"), url: g("url"), summary: g("summary"), clinical: g("clinical"),
+      limitations: g("limitations"), opposingNote: g("opposingNote"), challenge: fd.get("challenge") === "on",
+    };
+    const list = getMine().filter(x => x.id !== item.id);
+    if (!setMine([...list, item])) { $("#err").textContent = "保存できませんでした（プライベートブラウズ中だと保存できません）。"; return; }
+    location.replace("#/p/" + encodeURIComponent(item.id));
+  };
 }
 
 function route() {
-  const m = location.hash.match(/^#\/p\/(.+)$/);
-  if (m) renderDetail(decodeURIComponent(m[1])); else renderList();
+  const h = location.hash;
+  let m;
+  if (h === "#/add") renderForm(null);
+  else if ((m = h.match(/^#\/edit\/(.+)$/))) renderForm(decodeURIComponent(m[1]));
+  else if ((m = h.match(/^#\/p\/(.+)$/))) renderDetail(decodeURIComponent(m[1]));
+  else renderList();
 }
 
 $("#q").oninput = (e) => { state.q = e.target.value; renderList(); };
 $("#fireOnly").onclick = () => { state.fireOnly = !state.fireOnly; renderChips(); renderList(); };
+$("#mineOnly").onclick = () => { state.mineOnly = !state.mineOnly; renderChips(); renderList(); };
+$("#addBtn").onclick = () => { location.hash = "#/add"; };
 window.addEventListener("hashchange", route);
 load();
 </script>
