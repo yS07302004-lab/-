@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="論文アーカイブ">
+<title>毎朝の論文アーカイブ</title>
+<style>
+  :root {
+    --bg: #f7f6f3; --card: #fff; --text: #1f1f1f; --sub: #6b6b6b; --line: #e6e4df;
+    --accent: #2f6f5e; --accent-soft: #e5f1ec; --warn: #b4552d; --warn-soft: #f9ece7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#161616; --card:#212121; --text:#ececec; --sub:#a0a0a0; --line:#333;
+            --accent:#6fc2a8; --accent-soft:#1f3a32; --warn:#e8916a; --warn-soft:#3a261d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+         line-height:1.6; padding-bottom: env(safe-area-inset-bottom); }
+  header { position:sticky; top:0; z-index:10; background:var(--bg); padding:14px 16px 8px;
+           border-bottom:1px solid var(--line); }
+  h1 { font-size:18px; margin:0 0 10px; }
+  .chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip { flex:0 0 auto; border:1px solid var(--line); background:var(--card); color:var(--text);
+          border-radius:999px; padding:6px 12px; font-size:14px; cursor:pointer; }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .filters { display:flex; gap:8px; margin-top:6px; }
+  .filters input[type=search] { flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--line);
+                                background:var(--card); color:var(--text); font-size:15px; }
+  main { padding:12px 16px 40px; max-width:720px; margin:0 auto; }
+  .day { font-size:13px; color:var(--sub); margin:18px 0 6px; }
+  .card { display:block; background:var(--card); border:1px solid var(--line); border-radius:14px;
+          padding:12px 14px; margin-bottom:8px; color:inherit; text-decoration:none; }
+  .card .t { font-weight:600; font-size:15px; }
+  .meta { font-size:12px; color:var(--sub); margin-top:4px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .tag { font-size:11px; padding:1px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent); }
+  .tag.fire { background:var(--warn-soft); color:var(--warn); }
+  .tag.read { background:transparent; border:1px solid var(--line); color:var(--sub); }
+  .empty { color:var(--sub); text-align:center; margin-top:40px; }
+  .back { background:none; border:none; color:var(--accent); font-size:15px; padding:0; cursor:pointer; }
+  .detail h2 { font-size:19px; margin:10px 0 2px; line-height:1.4; }
+  .detail .en { color:var(--sub); font-size:13px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-top:12px; }
+  section h3 { font-size:14px; margin:0 0 6px; color:var(--accent); }
+  section.opp h3 { color:var(--warn); }
+  section p { margin:0; white-space:pre-wrap; }
+  .opp-item { border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
+  .opp-item a { color:var(--warn); font-weight:600; }
+  .btn { display:block; text-align:center; background:var(--accent); color:#fff; text-decoration:none;
+         padding:12px; border-radius:12px; font-weight:600; margin-top:14px; }
+  label.chk { display:flex; gap:8px; align-items:center; font-size:15px; }
+  textarea { width:100%; min-height:90px; margin-top:8px; padding:8px; border-radius:10px; border:1px solid var(--line);
+             background:var(--bg); color:var(--text); font-size:15px; font-family:inherit; }
+  .muted { color:var(--sub); }
+</style>
+</head>
+<body>
+<header id="hdr">
+  <h1>📚 毎朝の論文アーカイブ</h1>
+  <div class="chips" id="dayChips"></div>
+  <div class="filters">
+    <input type="search" id="q" placeholder="キーワードで絞り込み（例：腰痛、鍼）">
+    <button class="chip" id="fireOnly">🔥のみ</button>
+  </div>
+</header>
+<main id="app"></main>
+
+<script>
+const DAYS = [
+  { key: "全て", label: "全て" },
+  { key: "月", label: "月・鍼灸" },
+  { key: "火", label: "火・徒手/マッサージ" },
+  { key: "水", label: "水・柔整領域" },
+  { key: "木", label: "木・成長期/野球" },
+  { key: "金", label: "金・疼痛科学" },
+  { key: "土", label: "土・トレーニング" },
+  { key: "日", label: "日・自由" },
+];
+const state = { papers: [], day: "全て", q: "", fireOnly: false };
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+const isRead = (id) => store.get("read:" + id, false);
+
+async function load() {
+  try {
+    const res = await fetch("papers.json?t=" + Date.now());
+    const data = await res.json();
+    state.papers = (data.papers || []).sort((a, b) => b.date.localeCompare(a.date) || a.no - b.no);
+  } catch (e) {
+    $("#app").innerHTML = '<p class="empty">papers.json を読み込めませんでした。</p>';
+    return;
+  }
+  state.day = store.get("day", "全て");
+  renderChips();
+  route();
+}
+
+function renderChips() {
+  $("#dayChips").innerHTML = DAYS.map(d =>
+    `<button class="chip ${state.day === d.key ? "on" : ""}" data-day="${d.key}">${d.label}</button>`).join("");
+  $("#dayChips").querySelectorAll(".chip").forEach(b => b.onclick = () => {
+    state.day = b.dataset.day; store.set("day", state.day); renderChips(); renderList();
+  });
+  $("#fireOnly").classList.toggle("on", state.fireOnly);
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  return state.papers.filter(p =>
+    (state.day === "全て" || p.weekday === state.day) &&
+    (!state.fireOnly || p.challenge) &&
+    (!q || [p.titleJa, p.titleEn, p.summary, p.clinical, p.theme, p.design].join(" ").toLowerCase().includes(q)));
+}
+
+function renderList() {
+  $("#hdr").style.display = "";
+  const list = filtered();
+  if (!list.length) { $("#app").innerHTML = '<p class="empty">該当する論文はまだありません。</p>'; return; }
+  let html = "", lastDate = "";
+  for (const p of list) {
+    if (p.date !== lastDate) { html += `<div class="day">${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）</div>`; lastDate = p.date; }
+    const opp = p.opposing?.status === "あり" ? `<span class="tag fire">⚖️反対論文あり</span>` : "";
+    html += `<a class="card" href="#/p/${encodeURIComponent(p.id)}">
+      <div class="t">${p.challenge ? "🔥 " : ""}${esc(p.titleJa)}</div>
+      <div class="meta"><span class="tag">${esc(p.design)}</span>${opp}${isRead(p.id) ? '<span class="tag read">✓読んだ</span>' : ""}</div>
+    </a>`;
+  }
+  $("#app").innerHTML = html;
+}
+
+function renderDetail(id) {
+  const p = state.papers.find(x => x.id === id);
+  if (!p) { location.hash = ""; return; }
+  $("#hdr").style.display = "none";
+  window.scrollTo(0, 0);
+  const o = p.opposing || { status: "未調査", items: [] };
+  const oppBody = o.status === "あり"
+    ? (o.items || []).map(it => `<div class="opp-item">
+        <a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)} ↗</a>
+        <p>${esc(it.point)}</p></div>`).join("") +
+      (o.interpretation ? `<div class="opp-item"><strong>現時点の解釈</strong><p>${esc(o.interpretation)}</p></div>` : "")
+    : `<p class="muted">${o.status === "なし" ? "反対の研究は見つからず" + (o.searched ? `（検索範囲：${esc(o.searched)}）` : "") : "未調査（アーカイブ開始前の配信分）"}</p>`;
+  const block = (title, body) => body ? `<section><h3>${title}</h3><p>${esc(body)}</p></section>` : "";
+  $("#app").innerHTML = `<div class="detail">
+    <button class="back" onclick="history.length > 1 ? history.back() : (location.hash = '')">← 一覧に戻る</button>
+    <div class="meta" style="margin-top:10px">
+      <span>${esc(p.date)}（${esc(p.weekday)}・${esc(p.theme)}）</span>
+      <span class="tag">${esc(p.design)}</span>${p.challenge ? '<span class="tag fire">🔥挑戦枠</span>' : ""}
+    </div>
+    <h2>${esc(p.titleJa)}</h2>
+    <div class="en">${esc(p.titleEn)}${p.journal ? ` ／ ${esc(p.journal)}` : ""}${p.year ? `（${esc(p.year)}）` : ""}</div>
+    ${p.related ? `<p class="muted" style="font-size:13px">🔗 ${esc(p.related)}</p>` : ""}
+    ${block("ざっくり結論", p.summary || "（アーカイブ開始前の配信分のため要約なし）")}
+    ${block("臨床でどう使えるか", p.clinical)}
+    ${block("限界・注意点", p.limitations)}
+    ${p.challenge && p.whyChallenge ? block("🔥 なぜ視点が増えるか", p.whyChallenge) : ""}
+    <section class="opp"><h3>⚖️ 反対意見・異なる結果（${esc(o.status)}）</h3>${oppBody}</section>
+    <a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">論文を開く ↗</a>
+    <section>
+      <label class="chk"><input type="checkbox" id="readChk" ${isRead(p.id) ? "checked" : ""}> 読んだ</label>
+      <textarea id="memo" placeholder="メモ（この端末に保存されます）">${esc(store.get("memo:" + p.id, ""))}</textarea>
+    </section>
+  </div>`;
+  $("#readChk").onchange = (e) => store.set("read:" + p.id, e.target.checked);
+  $("#memo").oninput = (e) => store.set("memo:" + p.id, e.target.value);
+}
+
+function route() {
+  const m = location.hash.match(/^#\/p\/(.+)$/);
+  if (m) renderDetail(decodeURIComponent(m[1])); else renderList();
+}
+
+$("#q").oninput = (e) => { state.q = e.target.value; renderList(); };
+$("#fireOnly").onclick = () => { state.fireOnly = !state.fireOnly; renderChips(); renderList(); };
+window.addEventListener("hashchange", route);
+load();
+</script>
+</body>
+</html>

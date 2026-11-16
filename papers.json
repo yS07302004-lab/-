@@ -1,0 +1,101 @@
+{
+  "_schema": {
+    "id": "YYYY-MM-DD-番号（例：2026-11-17-1）",
+    "date": "YYYY-MM-DD",
+    "no": "その日の何件目か（1〜3）",
+    "weekday": "月/火/水/木/金/土/日",
+    "theme": "曜日テーマ",
+    "challenge": "挑戦枠なら true",
+    "titleJa": "研究名の日本語訳",
+    "titleEn": "原題",
+    "journal": "雑誌名",
+    "year": "発表年",
+    "design": "短いデザイン表記（RCT、SR・MA など）",
+    "url": "PubMed または DOI のURL",
+    "related": "過去に紹介した研究との関係（任意）",
+    "summary": "ざっくり結論",
+    "clinical": "臨床でどう使えるか",
+    "limitations": "限界・注意点",
+    "whyChallenge": "挑戦枠のとき：なぜ視点が増えるか",
+    "opposing": {
+      "status": "あり / なし / 未調査",
+      "searched": "なしの場合の検索範囲",
+      "interpretation": "どちらのエビデンスが強いか・現時点の妥当な解釈",
+      "items": [{ "title": "反対論文のタイトル", "url": "URL", "point": "要点" }]
+    }
+  },
+  "papers": [
+    {
+      "id": "2026-11-16-1", "date": "2026-11-16", "no": 1, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "titleJa": "高齢者の慢性腰痛に対する鍼治療：ランダム化比較試験",
+      "titleEn": "Acupuncture for Chronic Low Back Pain in Older Adults: A Randomized Clinical Trial",
+      "journal": "JAMA Network Open", "year": "", "design": "RCT",
+      "url": "https://doi.org/10.1001/jamanetworkopen.2025.31348",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-16-2", "date": "2026-11-16", "no": 2, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "titleJa": "前兆のない片頭痛に対する鍼治療と、脳の結合性に基づく効果予測：ランダム化比較試験",
+      "titleEn": "Acupuncture for Migraine Without Aura and Connection-Based Efficacy Prediction: A Randomized Clinical Trial",
+      "journal": "JAMA Network Open", "year": "", "design": "RCT",
+      "url": "https://doi.org/10.1001/jamanetworkopen.2025.55454",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-16-3", "date": "2026-11-16", "no": 3, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "titleJa": "肩峰下疼痛症候群に対するドライニードリング＋徒手療法・運動療法：シャム対照ランダム化比較試験",
+      "titleEn": "Dry Needling Plus Manual Therapy and Exercise for Subacromial Pain Syndrome: A Sham-Controlled Randomized Clinical Trial",
+      "journal": "", "year": "", "design": "シャム対照RCT",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41476428/",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-15-1", "date": "2026-11-15", "no": 1, "weekday": "日", "theme": "自由", "challenge": false,
+      "titleJa": "成人の慢性腰痛に対する最適な運動量：用量反応ネットワークメタ分析を用いたシステマティックレビュー",
+      "titleEn": "Optimal exercise dose in adults with chronic low back pain disorders: systematic review with dose-response network meta-analysis",
+      "journal": "British Journal of Sports Medicine", "year": "", "design": "SR・用量反応NMA",
+      "url": "https://doi.org/10.1136/bjsports-2026-111988",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-15-2", "date": "2026-11-15", "no": 2, "weekday": "日", "theme": "自由", "challenge": false,
+      "titleJa": "慢性疼痛に対する鍼治療：個別患者データメタ分析の更新版",
+      "titleEn": "Acupuncture for Chronic Pain: Update of an Individual Patient Data Meta-Analysis",
+      "journal": "", "year": "", "design": "IPDメタ分析",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29198932/",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-15-3", "date": "2026-11-15", "no": 3, "weekday": "日", "theme": "自由", "challenge": false,
+      "titleJa": "プラセボ対照試験における徒手療法の効果：システマティックレビューとメタ分析",
+      "titleEn": "Manual Therapy Effect in Placebo-Controlled Trials: A Systematic Review and Meta-Analysis",
+      "journal": "", "year": "", "design": "SR・MA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36360901/",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-14-1", "date": "2026-11-14", "no": 1, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "titleJa": "健康な成人の筋力・筋肥大のためのレジスタンストレーニング処方：システマティックレビューとベイズ型ネットワークメタ分析",
+      "titleEn": "Resistance training prescription for muscle strength and hypertrophy in healthy adults: a systematic review and Bayesian network meta-analysis",
+      "journal": "British Journal of Sports Medicine", "year": "", "design": "SR・ベイズNMA",
+      "url": "https://doi.org/10.1136/bjsports-2023-106807",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-14-2", "date": "2026-11-14", "no": 2, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "titleJa": "小児・青年サッカー選手に対するスポーツ傷害予防プログラムの効果：メタ分析とシステマティックレビュー",
+      "titleEn": "Effectiveness of sports injury prevention programs for adolescent and children football players: a meta-analysis and systematic review",
+      "journal": "", "year": "", "design": "SR・MA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42254669/",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    },
+    {
+      "id": "2026-11-14-3", "date": "2026-11-14", "no": 3, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "titleJa": "小児・青年に対するレジスタンストレーニングの筋肥大効果：システマティックレビューとメタ分析",
+      "titleEn": "Effects of Resistance Training on Muscle Hypertrophy in Children and Adolescents: A Systematic Review and Meta-Analysis",
+      "journal": "Sports Medicine", "year": "", "design": "SR・MA",
+      "url": "https://doi.org/10.1007/s40279-026-02499-0",
+      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+    }
+  ]
+}
