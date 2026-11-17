@@ -126,15 +126,22 @@
       "titleJa": "高齢者の慢性腰痛に対する鍼治療：ランダム化比較試験",
       "titleEn": "Acupuncture for Chronic Low Back Pain in Older Adults: A Randomized Clinical Trial",
       "journal": "JAMA Network Open",
-      "year": "",
+      "year": "2025",
       "design": "RCT",
       "url": "https://doi.org/10.1001/jamanetworkopen.2025.31348",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "3群RCT、n=800（平均73.6歳）。通常医療だけと比べて、鍼（12週で8〜15回）でも、鍼＋維持期の追加（さらに4〜6回）でも、6か月後の腰痛による障害（RMDQ）がより改善した（差 −1.0／−1.5点）。差は12か月後も続き、臨床的に意味のある改善の割合も多かった（39%・44% 対 29%）。重い有害事象は少なく、群間差はなかった。",
+      "clinical": "高齢の慢性腰痛では、鍼は安全で、通常医療に上乗せする選択肢として勧めやすい。維持期の施術を足すと痛みはやや良くなる。",
+      "limitations": "比較対象が通常医療だけでシャム群がないため、刺激そのものの効果と、期待や関わりの効果を分けられない。RMDQの差も1〜1.5点と小さい。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Cherkin 2009 鍼・シミュレーション鍼・通常医療のRCT（Arch Intern Med）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/19433697/",
+            "point": "慢性腰痛638人。個別化鍼・標準鍼・皮膚を貫かないシミュレーション鍼の改善はほぼ同じ（RMDQ 4.4〜4.5点）で、どれも通常医療（2.1点）より良かった。"
+          }
+        ],
+        "interpretation": "通常医療と比べた効果はどちらの研究でも一貫している。ただ、シャムと差がない研究があるので、効果の多くは刺す場所や刺入そのものより、施術という体験全体から来ている可能性が高い。"
       }
     },
     {
@@ -147,15 +154,22 @@
       "titleJa": "前兆のない片頭痛に対する鍼治療と、脳の結合性に基づく効果予測：ランダム化比較試験",
       "titleEn": "Acupuncture for Migraine Without Aura and Connection-Based Efficacy Prediction: A Randomized Clinical Trial",
       "journal": "JAMA Network Open",
-      "year": "",
-      "design": "RCT",
+      "year": "2026",
+      "design": "シャム対照RCT",
       "url": "https://doi.org/10.1001/jamanetworkopen.2025.55454",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "単盲検RCT、n=120。本物の鍼（8穴、得気あり）は、シャム鍼と比べて4週間の片頭痛日数を減らした（中央値の差 −1.0日）。頭痛日数、頓服薬の日数、痛み、生活への影響（HIT-6）、QOLも改善した。治療前の脳の機能的結合（fMRI）から、痛みと生活への影響の改善をある程度予測できた（r=0.23〜0.29）。",
+      "clinical": "前兆のない片頭痛の予防に、鍼は選択肢になる。脳画像で効く人を選ぶ話は研究段階で、臨床ですぐ使える段階ではない。",
+      "limitations": "単施設、4週間と短く、追跡も短い。単盲検で、シャムとの差も月1日程度。予測モデルの相関は弱い。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "GERAC 片頭痛試験（Lancet Neurol 2006）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/16545747/",
+            "point": "960人の多施設RCT。26週後の片頭痛日数の減少は、本物の鍼 2.3日、シャム鍼 1.5日、標準的な予防薬 2.1日で、3群に有意差はなかった（p=0.09）。"
+          }
+        ],
+        "interpretation": "規模も追跡期間もGERACのほうが大きい。本物とシャムの差は小さいか、ない可能性がある。ただ、鍼は予防薬と同じくらいの改善を示しているので、薬が合わない人の選択肢としては妥当。"
       }
     },
     {
@@ -167,16 +181,23 @@
       "challenge": false,
       "titleJa": "肩峰下疼痛症候群に対するドライニードリング＋徒手療法・運動療法：シャム対照ランダム化比較試験",
       "titleEn": "Dry Needling Plus Manual Therapy and Exercise for Subacromial Pain Syndrome: A Sham-Controlled Randomized Clinical Trial",
-      "journal": "",
-      "year": "",
+      "journal": "J Orthop Sports Phys Ther (JOSPT)",
+      "year": "2026",
       "design": "シャム対照RCT",
       "url": "https://pubmed.ncbi.nlm.nih.gov/41476428/",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "3群RCT、n=121。理学療法（運動＋徒手療法）にドライニードリングを足しても、1年後の肩の痛みと障害（SPADI）は、理学療法だけ・シャム追加の群と有意差がなかった（差 −7.5／−9.9点）。一方で、症状を許容できると答えた人の割合は多く（6か月で+34%）、その後1年間に追加で肩の治療を受ける人も少なかった（OR 0.35）。",
+      "clinical": "肩峰下疼痛症候群では、運動と徒手療法を土台にする。ドライニードリングは、患者の満足感や受診回数を減らす補助として考える程度。",
+      "limitations": "人数が少なく、主要評価項目の信頼区間が広い（効果を見逃している可能性もある）。副次評価項目の良い結果は、多重比較の影響もありうる。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "SAPSへのドライニードリングのSR・MA（Pain Med 2023）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/36018263/",
+            "point": "8RCT、n=538。他の保存療法にドライニードリングを足すと、痛み（SMD −0.57〜−1.29）と障害（SMD −0.69〜−1.07）がどの時点でも改善した。ただし8件中4件はバイアスのリスクが不明か高い。"
+          }
+        ],
+        "interpretation": "SRは上乗せ効果ありとしているが、質の低い試験が混ざっている。シャムを置いて1年追跡した今回のRCTのほうが、バイアスに強い。主要評価項目での上乗せは、はっきりしないと考えるのが妥当。"
       }
     },
     {
@@ -189,15 +210,22 @@
       "titleJa": "成人の慢性腰痛に対する最適な運動量：用量反応ネットワークメタ分析を用いたシステマティックレビュー",
       "titleEn": "Optimal exercise dose in adults with chronic low back pain disorders: systematic review with dose-response network meta-analysis",
       "journal": "British Journal of Sports Medicine",
-      "year": "",
+      "year": "2026",
       "design": "SR・用量反応NMA",
       "url": "https://doi.org/10.1136/bjsports-2026-111988",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "239RCTの用量反応ネットワークメタ分析。短期の障害に最適と予測された量は週4回・1回25分・13週。短期の痛みには週3回・1回30分・8週。ただし多くの量で信用区間が重なり、短期を超えて臨床的に意味のある組み合わせは少なかった。84%の試験がバイアスのリスクが高く、確実性は非常に低〜低。",
+      "clinical": "慢性腰痛の運動は、低〜中くらいの量（週3〜4回、1回25〜30分、8〜13週）を目安にする。量を増やしても上乗せは小さいので、続けられる量を優先する。",
+      "limitations": "確実性が非常に低〜低で、最適な量は予測にすぎない（信用区間が広い）。ほぼ全てが非特異的腰痛で、神経根症状のある人のデータは少ない。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "腰痛の安定化運動の用量反応メタ回帰（Sci Rep 2020）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/33037280/",
+            "point": "50RCT、n=2,786。安定化運動では、1回20〜30分・週3〜5回で効果が最大になり、それより多いと効果が下がる逆U字型の関係が示された。"
+          }
+        ],
+        "interpretation": "結論が真っ向から食い違う研究は見つからなかった。運動の種類を絞った研究でも、ほぼ同じ量が最適と出ており、方向性は一致している。ただ、どちらも質の低い試験が多く、最適な量を一つに決められる段階ではない。"
       }
     },
     {
@@ -209,16 +237,23 @@
       "challenge": false,
       "titleJa": "慢性疼痛に対する鍼治療：個別患者データメタ分析の更新版",
       "titleEn": "Acupuncture for Chronic Pain: Update of an Individual Patient Data Meta-Analysis",
-      "journal": "",
-      "year": "",
+      "journal": "The Journal of Pain",
+      "year": "2018",
       "design": "IPDメタ分析",
       "url": "https://pubmed.ncbi.nlm.nih.gov/29198932/",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "39RCT・20,827人の個別患者データのメタ分析（非特異的筋骨格痛、変形性関節症、慢性頭痛、肩の痛み）。鍼は、鍼なしよりも（約0.5SD）、シャム鍼よりも（約0.2SD）、どの痛みでも優れていた。効果は1年後も約15%減るだけで続いた。効果の大きさは、鍼のやり方より対照群の種類（刺すシャムや、対照群の治療が手厚い）で変わった。",
+      "clinical": "慢性痛に鍼を紹介するのは妥当な選択肢。シャムとの差（0.2SD）は小さいので、刺激そのものの効果と、施術の文脈の効果をあわせて説明する。",
+      "limitations": "シャムとの差は小さく、刺すシャムだと差はさらに小さい。対象の4疾患以外には当てはめにくい。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Madsen 2009 鍼・プラセボ鍼・鍼なしの3群試験のSR（BMJ）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/19174438/",
+            "point": "13試験・3,025人。鍼とプラセボ鍼の差は SMD −0.17（100mmスケールで約4mm）と小さく、臨床的な意味がなく、バイアスと区別できないと結論した。"
+          }
+        ],
+        "interpretation": "どちらもシャムとの差は約0.2SDで、数字はほぼ同じ。違うのは、それに臨床的な意味があるかの解釈。IPDメタ分析のほうが規模が大きく、質の高い試験に絞っている。シャムとの差は小さいが、鍼なしと比べた効果は確か、と読むのが妥当。"
       }
     },
     {
@@ -230,16 +265,23 @@
       "challenge": false,
       "titleJa": "プラセボ対照試験における徒手療法の効果：システマティックレビューとメタ分析",
       "titleEn": "Manual Therapy Effect in Placebo-Controlled Trials: A Systematic Review and Meta-Analysis",
-      "journal": "",
-      "year": "",
+      "journal": "Int J Environ Res Public Health",
+      "year": "2022",
       "design": "SR・MA",
       "url": "https://pubmed.ncbi.nlm.nih.gov/36360901/",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "プラセボ対照の徒手療法RCTのSR（53件、MAは48件）。マニピュレーションは、ほとんどの種類のシャムと比べて有意差がなかった（例：SMD 0.28、95%CI −0.24〜0.80）。軟部組織の手技はシャムより優れていた（SMD 0.40）。モビライゼーションと神経の滑走は、研究が少なく結論が出せなかった。シャムの作り方が研究ごとに違い、患者の期待もほとんど評価されていなかった。",
+      "clinical": "手技そのものの効果は、シャムと比べると小さいか、はっきりしない。期待や説明、触れることといった文脈の要素も、効果の一部として意識して使う。",
+      "limitations": "対象の疾患（腰痛から月経痛まで）も、シャムの作り方もばらばらで、まとめて解析している。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Rossettini ら「リンゴとオレンジを混ぜるな」（このSRへの批判レター、2023）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/37568986/",
+            "point": "筋骨格系と非筋骨格系の痛みや、慢性腰痛と手根管症候群のように、心理社会的要因の重みが違う疾患をまとめて解析していると指摘。プラセボ効果の解釈がゆがむ方法論上の問題が複数あるとしている。"
+          }
+        ],
+        "interpretation": "結論が逆の研究ではなく、方法論への批判。指摘はもっともで、マニピュレーションはシャムと差がない、という結果は疾患ごとに確かめる必要がある。この結果だけで手技の効果を否定するのは早い。"
       }
     },
     {
@@ -252,15 +294,22 @@
       "titleJa": "健康な成人の筋力・筋肥大のためのレジスタンストレーニング処方：システマティックレビューとベイズ型ネットワークメタ分析",
       "titleEn": "Resistance training prescription for muscle strength and hypertrophy in healthy adults: a systematic review and Bayesian network meta-analysis",
       "journal": "British Journal of Sports Medicine",
-      "year": "",
+      "year": "2023",
       "design": "SR・ベイズNMA",
       "url": "https://doi.org/10.1136/bjsports-2023-106807",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "健康な成人のRCTのベイズ型ネットワークメタ分析（筋力178研究・n=5,097、筋肥大119研究・n=3,364）。どの処方でも、運動しない場合より筋力も筋肥大も増えた。筋力は高負荷（1RMの80%超）が最も伸び、筋肥大はどの処方でも同じくらいだった。上位は、筋力が高負荷・複数セット・週3回、筋肥大が高負荷・複数セット・週2回。",
+      "clinical": "まず始めて続けることが一番大事。筋力を上げたいなら高負荷、筋肥大はやり方を選ばない。患者や選手の好みと続けやすさで処方を決めてよい。",
+      "limitations": "健康な成人が対象で、高齢者や疾患のある人、競技者にはそのまま当てはめにくい。多くの処方の推定値が似ていて、順位の差は小さい。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Schoenfeld 2017 週あたりのトレーニング量と筋肥大の用量反応メタ分析（J Sports Sci）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/27433992/",
+            "point": "15研究・34群。週のセット数が多いほど筋肥大が大きい、段階的な用量反応関係があった（1セット増えるごとに増加率+0.37%、多い量と少ない量の差は3.9%）。"
+          }
+        ],
+        "interpretation": "筋肥大はどの処方でも同じくらい、という今回の結果と、量が多いほど増えるという結果が食い違う。今回のNMAは量をセット数の大まかな分類でしか見ていない。純粋に筋肥大を最大にしたいなら量を増やす意味はある。一般の人には、続けられる処方で十分。"
       }
     },
     {
@@ -272,16 +321,23 @@
       "challenge": false,
       "titleJa": "小児・青年サッカー選手に対するスポーツ傷害予防プログラムの効果：メタ分析とシステマティックレビュー",
       "titleEn": "Effectiveness of sports injury prevention programs for adolescent and children football players: a meta-analysis and systematic review",
-      "journal": "",
-      "year": "",
+      "journal": "PeerJ",
+      "year": "2026",
       "design": "SR・MA",
       "url": "https://pubmed.ncbi.nlm.nih.gov/42254669/",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "3〜18歳のサッカー選手を対象にした9RCT（n=16,636、約125万時間の練習・試合）のメタ分析。傷害予防プログラムで、全体の傷害発生率が約4割減った（IRR 0.62）。下肢・膝・足関節の傷害も減り、子ども（IRR 0.54）のほうが青年（0.68）より効果が大きかった。",
+      "clinical": "少年スポーツのウォームアップに、FIFA 11+ Kids のような予防プログラムを取り入れる根拠になる。野球でも、下肢や体幹のプログラムを練習に組み込む参考になる。",
+      "limitations": "異質性が大きい（I²=80%）。サッカーのデータで、野球などほかの競技にそのまま当てはまるかはわからない。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Steffen 2008 女子ユースサッカーの「11」クラスターRCT（Scand J Med Sci Sports）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/18208428/",
+            "point": "113チーム・2,092人。予防プログラム「11」を導入しても、傷害発生率は対照群と差がなかった（RR 1.0）。20回以上実施できたチームは58チーム中14チームだけで、実施率の低さが原因と考えられた。"
+          }
+        ],
+        "interpretation": "メタ分析は効果ありとしているが、実施率が低ければ効果が出ないことを、この試験が示している。プログラムの中身以上に、指導者が続けさせる仕組み（短時間でできる、楽しめる、毎回やる）が大事と読むのが妥当。"
       }
     },
     {
@@ -294,15 +350,22 @@
       "titleJa": "小児・青年に対するレジスタンストレーニングの筋肥大効果：システマティックレビューとメタ分析",
       "titleEn": "Effects of Resistance Training on Muscle Hypertrophy in Children and Adolescents: A Systematic Review and Meta-Analysis",
       "journal": "Sports Medicine",
-      "year": "",
+      "year": "2026",
       "design": "SR・MA",
       "url": "https://doi.org/10.1007/s40279-026-02499-0",
-      "summary": "",
-      "clinical": "",
-      "limitations": "",
+      "summary": "18歳未満を対象にした23研究（n=1,443）のメタ分析。レジスタンストレーニングで、運動しない対照と比べて筋量は小さく増えた（d=0.22）。ほかの運動をした対照と比べると、効果はもっと大きかった（d=0.61）。思春期後は大きく増え（d=1.50）、思春期前・思春期中は小さかった。性別による一貫した差はなかった。",
+      "clinical": "小学生でも筋肥大は少しは起こるが、筋力が伸びる主な理由は神経系の適応。少年野球の高学年には、筋肉を大きくすることより、動作の質と神経系を狙った安全な筋トレとして位置づける。",
+      "limitations": "非ランダム化研究も含み、測り方（直接の画像か、間接的な方法か）もばらばら。思春期前の推定値は信頼区間が広い。",
       "opposing": {
-        "status": "未調査",
-        "items": []
+        "status": "あり",
+        "items": [
+          {
+            "title": "Ramsay 1990 思春期前の男子の筋力トレーニング（Med Sci Sports Exerc）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/2233199/",
+            "point": "9〜11歳の男子26人、20週のトレーニング。筋力は13〜37%伸びたが、CTで測った筋断面積は変わらなかった。筋力の伸びは神経系の適応によると考えられた。"
+          }
+        ],
+        "interpretation": "Ramsay は1研究で人数も少なく、メタ分析のほうが証拠として強い。ただメタ分析でも、思春期前の効果は小さく有意ではなかった（d=0.16）。思春期前の筋肥大はほとんどない、と考えてよく、両者の結果は大筋で一致している。"
       }
     }
   ]
