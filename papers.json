@@ -32,6 +32,91 @@
   },
   "papers": [
     {
+      "id": "2026-11-18-1",
+      "no": 1,
+      "challenge": false,
+      "date": "2026-11-18",
+      "weekday": "水",
+      "theme": "柔整領域",
+      "titleJa": "NSAIDの使用と骨癒合：アンブレラレビュー＋再構成メタ分析",
+      "titleEn": "NSAID Use and Bone Healing: An Umbrella Review with a Reconstructed Meta-Analysis",
+      "journal": "J Am Acad Orthop Surg",
+      "year": "2026",
+      "design": "アンブレラレビュー",
+      "url": "https://doi.org/10.5435/jaaos-d-25-01579",
+      "summary": "アンブレラレビュー（16レビュー）＋一次研究38件の再メタ分析。NSAIDの使用で偽関節のリスクが上がった（OR 1.56）。遅延癒合との関連ははっきりしない。リスクが高いのは成人・長管骨・高用量。小児と14日以内の短期使用ではリスク上昇なし。",
+      "clinical": "骨折の患者さんに鎮痛薬について聞かれたら、「短期・常用量なら大きな問題は示されていない。長期や高用量なら主治医に相談を」と伝える。処方の判断は医師。",
+      "limitations": "元のレビューの質は低〜非常に低い。観察研究が中心で、交絡（重い骨折ほど薬を多く使う）が残る。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "Tools for Practice #114（RCTのまとめ）",
+            "url": "https://cfpclearn.ca/tfp114",
+            "point": "成人の橈骨遠位端骨折RCT2件（計140人）と小児RCT（n=336）で偽関節に差なし。ただしRCTは小規模で古く、稀な結果には検出力が足りない。"
+          }
+        ],
+        "interpretation": "「短期・小児なら安全寄り、成人の長管骨で長期・高用量なら慎重に」と解釈するのが妥当。"
+      }
+    },
+    {
+      "id": "2026-11-18-2",
+      "no": 2,
+      "challenge": false,
+      "date": "2026-11-18",
+      "weekday": "水",
+      "theme": "柔整領域",
+      "titleJa": "急性足関節捻挫後の運動療法は再受傷を減らす：SR更新版・メタ分析",
+      "titleEn": "Exercise-based rehabilitation reduces reinjury following acute lateral ankle sprain: A systematic review update with meta-analysis",
+      "journal": "PLoS ONE",
+      "year": "2022",
+      "design": "SR・MA",
+      "url": "https://doi.org/10.1371/journal.pone.0262023",
+      "summary": "SR&MA（14RCT、n=2,182）。運動療法で12か月時点の再捻挫が減った（OR 0.60, 95%CI 0.36–0.99）。発生率では有意差なし。運動の量と再受傷に関連はなく、最適な内容は不明。",
+      "clinical": "固定・除痛で終わらせず、バランス・筋力・固有感覚の練習を処方する根拠になる。量を増やせば良いわけではない。",
+      "limitations": "CIの上限が1に近く、効果はぎりぎり。介入内容の記載の質は低〜中等度。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "van Rijn 2007（BJGP RCT, n=102）",
+            "url": "https://bjgp.org/content/57/543/793",
+            "point": "監視下の運動療法を加えても再捻挫（1年で約31%）や主観的回復に差なし。"
+          }
+        ],
+        "interpretation": "エビデンスは単独RCTよりSRのほうが強いが、効果は小さく不確か。"
+      }
+    },
+    {
+      "id": "2026-11-18-3",
+      "no": 3,
+      "challenge": true,
+      "date": "2026-11-18",
+      "weekday": "水",
+      "theme": "柔整領域",
+      "titleJa": "ハムストリングス肉ばなれへのPRP注射と競技復帰：SR・メタ分析",
+      "titleEn": "A systematic review and meta-analysis of percutaneous platelet-rich plasma (PRP) injection and return-to-play after acute hamstring muscle injury",
+      "journal": "Br J Sports Med",
+      "year": "2026",
+      "design": "SR・MA",
+      "url": "https://doi.org/10.1136/bjsports-2025-110683",
+      "summary": "SR&MA（6RCT、n=277）、GRADEは低〜中等度。PRPで復帰が平均8.6日早かった（21.4日 vs 30.0日、p=0.045）が、異質性が非常に高い（I²=94%）。再受傷率は変わらない（15% vs 16%）。",
+      "clinical": "「PRPで早く治る」と聞いた選手には、「根拠は弱く、再発も減らない」と伝える。再発予防の主役は段階的な負荷とエキセントリック運動のまま。",
+      "limitations": "p値は0.05ぎりぎりで、異質性が大きい。抄録の95%CI（−3.04〜−0.03）は−8.6日を含まず、何の指標のCIかは不明。",
+      "whyChallenge": "「有意差あり」の見出しが、異質性・盲検化・CIの読み方しだいでどこまで弱まるかを体験できる。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "Reurink らの二重盲検プラセボ対照RCT（BJSM 2015、1年追跡）",
+            "url": "https://bjsm.bmj.com/content/49/18/1206.abstract",
+            "point": "n=80。復帰期間・再受傷・MRIのどれにも利益なし。"
+          }
+        ],
+        "interpretation": "盲検化の質ではこちらが強く、現時点では効果ははっきりしないと解釈するのが妥当。"
+      }
+    },
+    {
       "id": "2026-11-17-1",
       "no": 1,
       "challenge": false,
