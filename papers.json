@@ -21,81 +21,289 @@
       "status": "あり / なし / 未調査",
       "searched": "なしの場合の検索範囲",
       "interpretation": "どちらのエビデンスが強いか・現時点の妥当な解釈",
-      "items": [{ "title": "反対論文のタイトル", "url": "URL", "point": "要点" }]
+      "items": [
+        {
+          "title": "反対論文のタイトル",
+          "url": "URL",
+          "point": "要点"
+        }
+      ]
     }
   },
   "papers": [
     {
-      "id": "2026-11-16-1", "date": "2026-11-16", "no": 1, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "id": "2026-11-17-1",
+      "no": 1,
+      "challenge": false,
+      "date": "2026-11-17",
+      "weekday": "火",
+      "theme": "徒手療法・マッサージ",
+      "titleJa": "変形性膝関節症で、運動療法に徒手療法を上乗せする効果：SR・MA",
+      "titleEn": "Additional Effects of Manual Therapy to Exercise on Pain and Function in Individuals With Knee Osteoarthritis: A Systematic Review and Meta-Analysis",
+      "journal": "Eur J Pain",
+      "year": "2026",
+      "design": "SR・MA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42885413/",
+      "summary": "SR&MA（29RCT、総人数は抄録に記載なし）、GRADEは非常に低〜中。運動だけより徒手＋運動のほうが、短期〜中期の痛み（短期 MD −1.30）と機能は改善した。長期では差がなかった。",
+      "clinical": "膝OAでは運動を主にして、徒手療法は最初の数週間で痛みを下げ、運動を続けやすくする補助として使う。",
+      "limitations": "確実性が低い結果が多く、手技も研究ごとにまちまち。長期の上乗せ効果は示されていない。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "MOA試験",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/23313532/",
+            "point": "206人、2×2要因RCT、1年追跡。徒手＋運動の組み合わせに上乗せ効果はなく、拮抗する交互作用もあった（P=0.027）。"
+          }
+        ],
+        "interpretation": "規模はSRのほうが大きいが、確実性は低い。短期の補助としてはありだが、長期の上乗せは期待しすぎないのが妥当。"
+      }
+    },
+    {
+      "id": "2026-11-17-2",
+      "no": 2,
+      "challenge": false,
+      "date": "2026-11-17",
+      "weekday": "火",
+      "theme": "徒手療法・マッサージ",
+      "titleJa": "成人の心身の健康に対する徒手療法（マッサージ・リフレクソロジー・関節モビライゼーション）の効果：SR・MA",
+      "titleEn": "Effectiveness of manual therapy on physical and mental health promotion in adults: a systematic review and meta-analysis",
+      "journal": "Front Psychol",
+      "year": "2026",
+      "design": "SR・MA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42272727/",
+      "summary": "SR&MA（88RCT、n=5,524）。対照と比べて、痛み（VAS −16）、収縮期血圧（−3.9mmHg）、心拍数（−4.2拍/分）、睡眠の質（PSQI −4.1）、不安（STAI −9.7）が改善した。著者自身は予備的なエビデンスとしている。",
+      "clinical": "施術後のリラックス効果、睡眠、不安の改善を伝える根拠にはなる。ただし治す根拠ではなく、あくまで補助として位置づける。",
+      "limitations": "3種類の手技と多くの疾患をひとまとめにしていて、異質性が大きい。対照群の条件もばらばら。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "JAMA Netw Open 2024 のマッサージ×痛みのエビデンスマップ",
+            "url": "https://doi.org/10.1001/jamanetworkopen.2024.22259",
+            "point": "SR 129本→17本を整理。確実性「高」の結論は0、「中」は7つだけだった。"
+          }
+        ],
+        "interpretation": "対象を絞って確実性を評価しているエビデンスマップのほうが慎重。今回の幅広く効くという結果は、割り引いて読むのが妥当。"
+      }
+    },
+    {
+      "id": "2026-11-17-3",
+      "no": 3,
+      "challenge": true,
+      "date": "2026-11-17",
+      "weekday": "火",
+      "theme": "徒手療法・マッサージ",
+      "titleJa": "盲検は成功したのか、それとも希望的観測か？ 脊椎マニピュレーションのRCTの二次解析",
+      "titleEn": "Successful Blinding or Wishful Thinking? A Secondary Analysis of a Randomised Controlled Trial of Manual Therapy",
+      "journal": "Eur J Pain",
+      "year": "2026",
+      "design": "RCTの二次解析",
+      "url": "https://doi.org/10.1002/ejp.70370",
+      "summary": "プラセボ対照RCT（慢性一次性腰痛）の二次解析、n=98。研究全体では盲検は成立していた（Bang指数 0.13）。ただしこれは、本物群の正しい推測とプラセボ群の希望的観測が打ち消し合った結果だった。本物を受けたと見抜いた人ほど、治療効果がずっと大きかった。有害事象は差がなかった。",
+      "clinical": "患者が効く施術を受けていると確信できるかどうかが、結果を左右する可能性がある。説明の仕方や納得感も施術の一部として意識する。",
+      "limitations": "二次解析で人数が少ない。改善したから本物だと思った（逆の因果）という可能性もある。",
+      "whyChallenge": "盲検が成立した＝プラセボを排除できた、という読み方が単純すぎることを示している。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "BMJ 2020 のメタ疫学研究",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/31964641/",
+            "point": "142のメタ分析、1,153試験。盲検の有無で推定される効果に平均的な差はなかった。ただし交絡が残る限界がある。"
+          }
+        ],
+        "interpretation": "徒手療法では信念が効果を左右しうるが、どれほど一般化できるかは未確定と解釈するのが妥当。"
+      }
+    },
+    {
+      "id": "2026-11-16-1",
+      "date": "2026-11-16",
+      "no": 1,
+      "weekday": "月",
+      "theme": "鍼灸",
+      "challenge": false,
       "titleJa": "高齢者の慢性腰痛に対する鍼治療：ランダム化比較試験",
       "titleEn": "Acupuncture for Chronic Low Back Pain in Older Adults: A Randomized Clinical Trial",
-      "journal": "JAMA Network Open", "year": "", "design": "RCT",
+      "journal": "JAMA Network Open",
+      "year": "",
+      "design": "RCT",
       "url": "https://doi.org/10.1001/jamanetworkopen.2025.31348",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-16-2", "date": "2026-11-16", "no": 2, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "id": "2026-11-16-2",
+      "date": "2026-11-16",
+      "no": 2,
+      "weekday": "月",
+      "theme": "鍼灸",
+      "challenge": false,
       "titleJa": "前兆のない片頭痛に対する鍼治療と、脳の結合性に基づく効果予測：ランダム化比較試験",
       "titleEn": "Acupuncture for Migraine Without Aura and Connection-Based Efficacy Prediction: A Randomized Clinical Trial",
-      "journal": "JAMA Network Open", "year": "", "design": "RCT",
+      "journal": "JAMA Network Open",
+      "year": "",
+      "design": "RCT",
       "url": "https://doi.org/10.1001/jamanetworkopen.2025.55454",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-16-3", "date": "2026-11-16", "no": 3, "weekday": "月", "theme": "鍼灸", "challenge": false,
+      "id": "2026-11-16-3",
+      "date": "2026-11-16",
+      "no": 3,
+      "weekday": "月",
+      "theme": "鍼灸",
+      "challenge": false,
       "titleJa": "肩峰下疼痛症候群に対するドライニードリング＋徒手療法・運動療法：シャム対照ランダム化比較試験",
       "titleEn": "Dry Needling Plus Manual Therapy and Exercise for Subacromial Pain Syndrome: A Sham-Controlled Randomized Clinical Trial",
-      "journal": "", "year": "", "design": "シャム対照RCT",
+      "journal": "",
+      "year": "",
+      "design": "シャム対照RCT",
       "url": "https://pubmed.ncbi.nlm.nih.gov/41476428/",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-15-1", "date": "2026-11-15", "no": 1, "weekday": "日", "theme": "自由", "challenge": false,
+      "id": "2026-11-15-1",
+      "date": "2026-11-15",
+      "no": 1,
+      "weekday": "日",
+      "theme": "自由",
+      "challenge": false,
       "titleJa": "成人の慢性腰痛に対する最適な運動量：用量反応ネットワークメタ分析を用いたシステマティックレビュー",
       "titleEn": "Optimal exercise dose in adults with chronic low back pain disorders: systematic review with dose-response network meta-analysis",
-      "journal": "British Journal of Sports Medicine", "year": "", "design": "SR・用量反応NMA",
+      "journal": "British Journal of Sports Medicine",
+      "year": "",
+      "design": "SR・用量反応NMA",
       "url": "https://doi.org/10.1136/bjsports-2026-111988",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-15-2", "date": "2026-11-15", "no": 2, "weekday": "日", "theme": "自由", "challenge": false,
+      "id": "2026-11-15-2",
+      "date": "2026-11-15",
+      "no": 2,
+      "weekday": "日",
+      "theme": "自由",
+      "challenge": false,
       "titleJa": "慢性疼痛に対する鍼治療：個別患者データメタ分析の更新版",
       "titleEn": "Acupuncture for Chronic Pain: Update of an Individual Patient Data Meta-Analysis",
-      "journal": "", "year": "", "design": "IPDメタ分析",
+      "journal": "",
+      "year": "",
+      "design": "IPDメタ分析",
       "url": "https://pubmed.ncbi.nlm.nih.gov/29198932/",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-15-3", "date": "2026-11-15", "no": 3, "weekday": "日", "theme": "自由", "challenge": false,
+      "id": "2026-11-15-3",
+      "date": "2026-11-15",
+      "no": 3,
+      "weekday": "日",
+      "theme": "自由",
+      "challenge": false,
       "titleJa": "プラセボ対照試験における徒手療法の効果：システマティックレビューとメタ分析",
       "titleEn": "Manual Therapy Effect in Placebo-Controlled Trials: A Systematic Review and Meta-Analysis",
-      "journal": "", "year": "", "design": "SR・MA",
+      "journal": "",
+      "year": "",
+      "design": "SR・MA",
       "url": "https://pubmed.ncbi.nlm.nih.gov/36360901/",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-14-1", "date": "2026-11-14", "no": 1, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "id": "2026-11-14-1",
+      "date": "2026-11-14",
+      "no": 1,
+      "weekday": "土",
+      "theme": "トレーニング・運動生理",
+      "challenge": false,
       "titleJa": "健康な成人の筋力・筋肥大のためのレジスタンストレーニング処方：システマティックレビューとベイズ型ネットワークメタ分析",
       "titleEn": "Resistance training prescription for muscle strength and hypertrophy in healthy adults: a systematic review and Bayesian network meta-analysis",
-      "journal": "British Journal of Sports Medicine", "year": "", "design": "SR・ベイズNMA",
+      "journal": "British Journal of Sports Medicine",
+      "year": "",
+      "design": "SR・ベイズNMA",
       "url": "https://doi.org/10.1136/bjsports-2023-106807",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-14-2", "date": "2026-11-14", "no": 2, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "id": "2026-11-14-2",
+      "date": "2026-11-14",
+      "no": 2,
+      "weekday": "土",
+      "theme": "トレーニング・運動生理",
+      "challenge": false,
       "titleJa": "小児・青年サッカー選手に対するスポーツ傷害予防プログラムの効果：メタ分析とシステマティックレビュー",
       "titleEn": "Effectiveness of sports injury prevention programs for adolescent and children football players: a meta-analysis and systematic review",
-      "journal": "", "year": "", "design": "SR・MA",
+      "journal": "",
+      "year": "",
+      "design": "SR・MA",
       "url": "https://pubmed.ncbi.nlm.nih.gov/42254669/",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     },
     {
-      "id": "2026-11-14-3", "date": "2026-11-14", "no": 3, "weekday": "土", "theme": "トレーニング・運動生理", "challenge": false,
+      "id": "2026-11-14-3",
+      "date": "2026-11-14",
+      "no": 3,
+      "weekday": "土",
+      "theme": "トレーニング・運動生理",
+      "challenge": false,
       "titleJa": "小児・青年に対するレジスタンストレーニングの筋肥大効果：システマティックレビューとメタ分析",
       "titleEn": "Effects of Resistance Training on Muscle Hypertrophy in Children and Adolescents: A Systematic Review and Meta-Analysis",
-      "journal": "Sports Medicine", "year": "", "design": "SR・MA",
+      "journal": "Sports Medicine",
+      "year": "",
+      "design": "SR・MA",
       "url": "https://doi.org/10.1007/s40279-026-02499-0",
-      "summary": "", "clinical": "", "limitations": "", "opposing": { "status": "未調査", "items": [] }
+      "summary": "",
+      "clinical": "",
+      "limitations": "",
+      "opposing": {
+        "status": "未調査",
+        "items": []
+      }
     }
   ]
 }
