@@ -32,6 +32,96 @@
   },
   "papers": [
     {
+      "id": "2026-11-19-1",
+      "no": 1,
+      "challenge": false,
+      "date": "2026-11-19",
+      "weekday": "木",
+      "theme": "成長期・野球",
+      "titleJa": "少年野球の投球障害は予防プログラムで減らせるか：ランダム化比較試験",
+      "titleEn": "Throwing Injuries in Youth Baseball Players: Can a Prevention Program Help? A Randomized Controlled Trial",
+      "journal": "Am J Sports Med",
+      "year": "2019",
+      "design": "RCT",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31336051/",
+      "summary": "RCT（16チームを割り付け、9〜11歳 n=237、追跡12か月、PEDro 8/10）。ウォームアップに「ストレッチ5種＋動的可動性2種＋バランス2種」を入れたチームは、肩・肘の投球障害が1.7 vs 3.1／1000AE（約45%減）。球速もやや上がり、肩の水平内転、非投球側股関節の内旋、胸椎後弯の角度が改善した。",
+      "clinical": "小学校高学年にそのまま当てはまる年齢。「肩の水平内転・股関節内旋・胸椎」を10分のウォームアップに組み込むのは根拠のある選択。",
+      "limitations": "日本の1地域のみが対象。選手と指導者は盲検化されていない。抄録のHR（1.94）は向きが分かりにくく、チーム単位の割り付けを解析で考慮したかは不明。",
+      "opposing": {
+        "status": "なし",
+        "searched": "youth baseball prevention program RCT／no effect。補足：2024年のスコーピングレビューでは該当研究は4件（RCT 2件）しかなく、障害の定義もばらばら。同じグループの2018年の研究は非ランダム化で選択バイアスも指摘されている。方向性は一貫しているが根拠はほぼこの研究グループのみで、有望だが確立したとまでは言えない",
+        "items": [
+          {
+            "title": "2024年のスコーピングレビュー",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/38311104/",
+            "point": "該当する研究は4件（RCT 2件）のみで、障害の定義もばらばら。"
+          },
+          {
+            "title": "同じグループの2018年の研究",
+            "url": "https://doi.org/10.1177/0363546517738003",
+            "point": "非ランダム化で、選択バイアスが指摘されている。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026-11-19-2",
+      "no": 2,
+      "challenge": false,
+      "date": "2026-11-19",
+      "weekday": "木",
+      "theme": "成長期・野球",
+      "titleJa": "青年期の野球選手で肘・肩の障害の危険因子を調べたシステマティックレビュー",
+      "titleEn": "Risk Factors for Elbow and Shoulder Injuries in Adolescent Baseball Players: A Systematic Review",
+      "journal": "Am J Sports Med",
+      "year": "2019",
+      "design": "SR",
+      "url": "https://doi.org/10.1177/0363546518760573",
+      "summary": "SR（22研究、19変数。異質性が大きくメタ分析はなし）。独立した危険因子は、年齢・身長・複数チームへの所属・球速・腕の疲労（肩は1試合の投球数も）。肩の外旋・総回旋可動域は有意ではなく、GIRD（内旋制限）は結論が出ていない。",
+      "clinical": "可動域の数字より「疲労の訴え」「掛け持ち」「球速の速い子」をまず確認する。保護者・指導者への説明にも使いやすい。",
+      "limitations": "観察研究のみで、定性的にまとめたもの。小学生に絞った解析ではない。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "1件目のRCT（少年野球の投球障害予防プログラム、AJSM 2019）",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/31336051/",
+            "point": "可動域や姿勢の改善で障害が減ったと報告していて、一見すると本SRと食い違う。"
+          }
+        ],
+        "interpretation": "「可動域が危険因子かどうか（観察研究）」と「介入して変えたら減るか（RCT）」は別の問い。デザインはRCTのほうが強いが1件だけなので、「負荷の管理が土台で、可動域へのアプローチは上乗せ」と考えるのが妥当。"
+      }
+    },
+    {
+      "id": "2026-11-19-3",
+      "no": 3,
+      "challenge": true,
+      "date": "2026-11-19",
+      "weekday": "木",
+      "theme": "成長期・野球",
+      "titleJa": "投球制限のルールは高校野球の肩・肘の障害を減らしたか",
+      "titleEn": "Do Pitching Restriction Policies Reduce Shoulder and Elbow Injuries in High School Baseball Players?",
+      "journal": "Orthop J Sports Med",
+      "year": "2026",
+      "design": "記述疫学研究",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41640453/",
+      "summary": "記述疫学研究（米国の高校の障害サーベイランス、2013〜2019年、155万AE、肩・肘の障害295件）。2016年の全米での投球制限ルール義務化の前後で、障害の発生率は変わらなかった（1.93→1.86／1万AE、IRR 1.03）。ただし「連日登板の禁止」と「1日105球以下」というルール要素がある州では、発生率が低かった（IRR 0.32・0.40）。",
+      "clinical": "「球数制限があるから安心」ではない。中身（連投禁止・上限球数・休養日）が実際に守られているかを確認するほうが大事。",
+      "limitations": "単変量の解析で交絡を調整していない。遵守状況は不明。クラブチームや大会での登板は含まれていない。",
+      "whyChallenge": "「制度を入れれば障害が減る」という直感に、データで疑問を投げかけているから。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "2件目のSR（青年期野球選手の肘・肩障害の危険因子、AJSM 2019）",
+            "url": "https://doi.org/10.1177/0363546518760573",
+            "point": "1試合の投球数を危険因子としていて、球数を管理する意味はあるという立場。本研究でも、ルールがある状況のほうが練習中の肘の障害が多いという予想外の結果（IRR 1.78）が出ている。"
+          }
+        ],
+        "interpretation": "観察研究のため断定はできず、「ルールを作るだけでは不十分で、要素の設計と遵守が大切」と読むのが妥当。"
+      }
+    },
+    {
       "id": "2026-11-18-1",
       "no": 1,
       "challenge": false,
