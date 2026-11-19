@@ -32,6 +32,92 @@
   },
   "papers": [
     {
+      "id": "2026-11-20-1",
+      "no": 1,
+      "challenge": false,
+      "date": "2026-11-20",
+      "weekday": "金",
+      "theme": "疼痛科学",
+      "titleJa": "慢性筋骨格系疼痛で、運動は「痛みに関わる心理」を変えるか",
+      "titleEn": "Exercise for pain-related psychological outcomes in chronic musculoskeletal pain: a systematic review and meta-analysis",
+      "journal": "BMC Sports Science, Medicine and Rehabilitation",
+      "year": "2026",
+      "design": "SR・MA",
+      "url": "https://doi.org/10.1186/s13102-026-02137-2",
+      "summary": "SR&MA（RCT 43件、主解析20研究。破局的思考 6研究 n=332、痛み 15研究 n=1,017、障害 12研究 n=836）。一番安定していたのは破局的思考の改善（g=0.39、予測区間も0超え、確実性 低）。痛み（g=0.74）・障害（g=0.48）も平均は運動が有利だが、予測区間がマイナスまでまたがり、確実性は非常に低い。恐怖回避・自己効力感は一貫せず。",
+      "clinical": "「運動で痛みが必ず減る」より「運動で痛みへの捉え方（破局化）が少し和らぐ」と説明する方が根拠に沿う。痛みの数値だけで運動の効果を判断しない。",
+      "limitations": "破局的思考の6研究中5研究が線維筋痛症。運動の種類・対照は確認できず不明。",
+      "opposing": {
+        "status": "なし",
+        "searched": "exercise no effect catastrophizing／kinesiophobia meta-analysis。近い結果として、脊椎痛17RCT（n=1,354）のSR（Frontiers in Psychology 2023）では、運動恐怖へのピラティス・筋トレは短期的に有利だが、6〜12か月で差なしや無効の試験もあり、確実性は非常に低い。どちらも確実性が低く、「短期に少し効く可能性、特に破局化」が現時点で妥当",
+        "items": [
+          {
+            "title": "脊椎痛と運動恐怖のSR（Frontiers in Psychology 2023）",
+            "url": "https://doi.org/10.3389/fpsyg.2023.1213199",
+            "point": "17RCT（n=1,354）。ピラティス・筋トレは短期的に有利だが、6〜12か月で差なしや無効の試験もあり、確実性は非常に低い。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026-11-20-2",
+      "no": 2,
+      "challenge": false,
+      "date": "2026-11-20",
+      "weekday": "金",
+      "theme": "疼痛科学",
+      "titleJa": "「感覚運動の再学習」が効きやすい人はいるのか：RESOLVE試験の二次解析",
+      "titleEn": "Effect Modifiers of Graded Sensorimotor Retraining for Chronic Low Back Pain: A Secondary Analysis of the RESOLVE Randomized Trial",
+      "journal": "JAMA Network Open",
+      "year": "2026",
+      "design": "RCTの二次解析",
+      "url": "https://doi.org/10.1001/jamanetworkopen.2025.52787",
+      "related": "本試験：RESOLVE（JAMA 2022、https://doi.org/10.1001/jama.2022.9930）",
+      "summary": "シャム対照RCTの事後・探索的な二次解析（n=276、8つの基礎データで効きやすさの差を検証）。本試験（JAMA 2022）は、痛みの教育＋動く前のトレーニング＋段階的な動作・負荷を12回行い、18週の痛みがシャムより −1.0/10（95%CI −1.5〜−0.4）。今回の解析では、痛みの強さ・破局的思考・運動恐怖・服薬などで効きやすさの差はほぼなし。「腰の感じ方の乱れ」が強い人ほど52週の効果が小さい、という1点だけが有意。",
+      "clinical": "「この心理タイプの人だけに教育を」と選別する根拠は弱い。慢性腰痛には広く、教育＋段階的な負荷の組み合わせを試してよい。",
+      "limitations": "差を検出できる人数設計ではない。腰の感じ方の質問票（FreBAQ）は妥当性の確認が不十分。本試験の効果も52週の痛みは有意差なし（−0.5）。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "感覚の識別トレーニングのSR（BMC Musculoskelet Disord 2016）",
+            "url": "https://doi.org/10.1186/s12891-016-0997-8",
+            "point": "6RCT（n=257）。臨床的に意味のある改善は2研究のみで、追跡（12・24週）では群間差なし、シャムに劣った手技もあった。ただし小規模で盲検化なし。"
+          }
+        ],
+        "interpretation": "単体の識別トレーニングは根拠が弱く、RESOLVEのような教育＋負荷のパッケージの方がエビデンスは強い（大規模シャム対照RCT）。それでも効果は平均で臨床的に意味のある最小差ぎりぎり。本試験へのLetter（PMID 36648472）は未確認。"
+      }
+    },
+    {
+      "id": "2026-11-20-3",
+      "no": 3,
+      "challenge": true,
+      "date": "2026-11-20",
+      "weekday": "金",
+      "theme": "疼痛科学",
+      "titleJa": "痛み再処理療法（PRT）の5年追跡：心理療法で慢性腰痛が5年後も軽い？",
+      "titleEn": "Pain Reprocessing Therapy vs Placebo and Usual Care for Patients With Chronic Back Pain: 5-Year Follow-Up of a Randomized Clinical Trial",
+      "journal": "JAMA Psychiatry",
+      "year": "2025",
+      "design": "RCTの5年追跡",
+      "url": "https://doi.org/10.1001/jamapsychiatry.2025.1844",
+      "summary": "RCT（3群・当初n=151）の5年追跡（データあり113人＝75%）。「この痛みは危険ではなく脳が作っている」と捉え直させるPRT群は、5年後の痛み1.93/10。プラセボ注射群3.19、通常ケア2.60。差はプラセボ比 −1.29、通常ケア比 −0.96。痛みがほぼ無い人（0〜1点）は55% vs 26% vs 36%。",
+      "clinical": "痛み＝損傷ではないという捉え直しが長く残る可能性。施術時の声かけ・説明も「介入」の一部と考える材料になる。",
+      "limitations": "対象は軽〜中等度で均質。25%が脱落。差の信頼区間は記載なし。開発者自身が著者に入っている。",
+      "whyChallenge": "「手で治す」施術者にとって、言葉と捉え直しだけで5年後の痛みが変わるという主張は、何が効いているのかを問い直させる。",
+      "opposing": {
+        "status": "あり",
+        "items": [
+          {
+            "title": "PainScience.com（P. Ingraham、2026年8月）の批判",
+            "url": "https://www.painscience.com/blog/pain-reprocessing-therapy-follow-up.html",
+            "point": "元の試験は追試がない／軽症で均質な対象のためSMDが大きく見えやすい／大きな効果は「痛みは脳が原因」という信念の指標で出ており、その信念を教える治療なので循環的。"
+          }
+        ],
+        "interpretation": "査読論文ではないが指摘は妥当。現時点では「軽症・均質な対象の追試のない1試験」で、有望だが確定ではない。"
+      }
+    },
+    {
       "id": "2026-11-19-1",
       "no": 1,
       "challenge": false,
