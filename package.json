@@ -1,0 +1,44 @@
+{
+  "name": "tsubotan",
+  "version": "0.1.0",
+  "description": "経穴を3Dで見て覚える図鑑アプリ（肺経デモ）",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host",
+    "model:download": "bash scripts/download-bp3d.sh",
+    "model:convert": "node --max-old-space-size=8000 scripts/convert-bp3d.mjs",
+    "typecheck": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yS07302004-lab/-.git"
+  },
+  "license": "SEE LICENSE IN README.md",
+  "bugs": {
+    "url": "https://github.com/yS07302004-lab/-/issues"
+  },
+  "homepage": "https://github.com/yS07302004-lab/-#readme",
+  "dependencies": {
+    "@react-three/drei": "^9.117.3",
+    "@react-three/fiber": "^8.17.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/extensions": "^4.1.1",
+    "@gltf-transform/functions": "^4.1.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.170.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "draco3dgltf": "^1.5.7",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^0.21.1"
+  },
+  "private": true,
+  "type": "module"
+}

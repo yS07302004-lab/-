@@ -1,0 +1,46 @@
+{
+  "credit": "BodyParts3D, Copyright© The Database Center for Life Science licensed by CC Attribution-Share Alike 2.1 Japan",
+  "license": "CC BY-SA 2.1 JP",
+  "coordinate": "meters, Y-up, anterior=+Z, body right=-X; from BodyParts3D (mm, Z-up, anterior=-Y) via (x,y,z)->(x,z,-y)*0.001",
+  "draco": true,
+  "models": [
+    {
+      "file": "skin.glb",
+      "vertices": 102467,
+      "triangles": 203382,
+      "parts": 1,
+      "bytes": 480984,
+      "bounds_m": {
+        "min": [
+          -0.3341189920902252,
+          -0.0781112015247345,
+          -0.045247599482536316
+        ],
+        "max": [
+          0.3328250050544739,
+          1.6413600444793701,
+          0.24678300321102142
+        ]
+      }
+    },
+    {
+      "file": "bones.glb",
+      "vertices": 287126,
+      "triangles": 520284,
+      "parts": 213,
+      "bytes": 1272572,
+      "bounds_m": {
+        "min": [
+          -0.3239139914512634,
+          -0.07047989964485168,
+          -0.018000999465584755
+        ],
+        "max": [
+          0.32393500208854675,
+          1.6362700462341309,
+          0.2360440045595169
+        ]
+      }
+    }
+  ]
+}
