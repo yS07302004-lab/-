@@ -1,8 +1,7 @@
 name: Deploy to GitHub Pages
 
+# このリポジトリの Pages は別のサイト（論文アーカイブ）が使っているため、自動では動かさない
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
